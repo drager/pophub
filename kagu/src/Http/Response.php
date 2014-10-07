@@ -18,6 +18,7 @@ class Response {
    * Standard HTTP status codes.
    */
   const STATUS_404 = 404;
+  const STATUS_422 = 422;
   const STATUS_500 = 500;
 
   /**
@@ -32,11 +33,15 @@ class Response {
 
     $status = (int)strtok($status, " ");
 
-    if ($status === 404) {
+    if ($status === self::STATUS_404) {
       throw new HttpStatus404Exception("Page not found.");
     }
 
-    if ($status === 500) {
+    if ($status === self::STATUS_422) {
+      throw new HttpStatus404Exception("Unprocessable Entity.");
+    }
+
+    if ($status === self::STATUS_500) {
       throw new \Exception("Something unexpected happend."); 
     }
   }
@@ -74,7 +79,7 @@ class Response {
   /**
    * @return Array
    */
-  private function getHeaders() {
+  public function getHeaders() {
     return $this->headers;
   }
 

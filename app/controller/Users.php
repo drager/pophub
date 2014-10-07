@@ -3,7 +3,7 @@
 namespace Controller;
 
 require_once './model/Github.php';
-require_once './view/SingleUser.php';
+require_once './view/Users.php';
 
 class Users {
   /**
@@ -21,7 +21,8 @@ class Users {
    */
   function __construct() {
     $this->model = new \Model\Github();
-    $this->view = new \View\SingleUser();
+    $this->view = new \View\Users();
+    $this->errorView = new \View\Error();
   }
 
   /**
@@ -29,12 +30,19 @@ class Users {
    * @param Integer $page 
    * @return The show all users view
    */
-  public function index($page = null) {
-    $users = $this->model->getAllUsers($page);
+  public function index() {
+    $page = $this->view->getPage();
+    if ($this->view->getSortBy() === "repos" ) {
+      $sortBy = $this->view->getSortBy();
+      $users = $this->model->getAllUsers($page, $sortBy);
+    }
+    else {
+      $users = $this->model->getAllUsers($page);
+    }
 
     return $this->view->showAllUsers(array(
-      "users" => $users,
-      "page" => $page
+      "users" => $users["body"],
+      "pages" => $users["pages"]
     ));
   }
 
@@ -44,9 +52,13 @@ class Users {
    * @return The show view
    */
   public function show($user) {
-    $userData = $this->model->getSingleUser($user);
-    $repos = $this->model->getUsersRepos($user);
-    $followers = $this->model->getUserFollowers($user);
+    try {
+      $userData = $this->model->getSingleUser($user);
+      $repos = $this->model->getUsersRepos($user);
+      $followers = $this->model->getUserFollowers($user);
+    } catch (\Exception $e) {
+      return $this->errorView->showPageNotFound("/users/" . $user);
+    }
 
     return $this->view->show(array(
       "user" => $userData,
