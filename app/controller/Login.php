@@ -1,6 +1,8 @@
 <?php
 
-namespace Controller;
+namespace PopHub\Controller;
+
+use PopHub\Model;
 
 class Login {
   /**
@@ -14,7 +16,7 @@ class Login {
   private $model;
   
   function __construct() {
-    $this->model = new \Model\Github();
+    $this->model = new Model\Github();
   }
 
   public function index() {

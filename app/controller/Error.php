@@ -1,14 +1,14 @@
 <?php
 
-namespace Controller;
+namespace PopHub\Controller;
 
-require_once './view/Error.php';
+use PopHub\View;
 
 class Error {
   private $view;
 
   function __construct() {
-    $this->view = new \View\Error();
+    $this->view = new View\Error();
   }
 
   /**

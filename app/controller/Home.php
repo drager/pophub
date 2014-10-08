@@ -1,14 +1,14 @@
 <?php
 
-namespace Controller;
+namespace PopHub\Controller;
 
-require_once './view/Home.php';
+use PopHub\View;
 
 class Home {
   private $view;
 
   function __construct() {
-    $this->view = new \View\Home();
+    $this->view = new View\Home();
   }
 
   public function index() {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Controller;
+namespace PopHub\Controller;
 
-require_once './model/Github.php';
-require_once './view/Users.php';
+use PopHub\Model;
+use PopHub\View;
 
 class Users {
   /**
@@ -20,9 +20,9 @@ class Users {
    * Constructor
    */
   function __construct() {
-    $this->model = new \Model\Github();
-    $this->view = new \View\Users();
-    $this->errorView = new \View\Error();
+    $this->model = new Model\Github();
+    $this->view = new View\Users();
+    $this->errorView = new View\Error();
   }
 
   /**

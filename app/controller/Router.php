@@ -1,22 +1,18 @@
 <?php
 
-namespace Controller;
+namespace PopHub\Controller;
 
 require_once '../vendor/autoload.php';
 require_once '../kagu/src/Config/Config.php';
-require_once 'controller/Users.php';
-require_once 'controller/Home.php';
-require_once 'controller/Error.php';
-require_once 'controller/Login.php';
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing;
 use Klein\Klein;
 
 use Kagu\Config\Config;
-use Controller;
+use PopHub\Controller;
 
-class Routers {
+class Router {
   private $config;
 
   public function doRoute() {

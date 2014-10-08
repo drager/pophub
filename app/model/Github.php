@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace PopHub\Model;
 
 require_once '../kagu/src/Http/Request.php';
 require_once '../kagu/src/Config/Config.php';

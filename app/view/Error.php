@@ -1,6 +1,6 @@
 <?php
 
-namespace View;
+namespace PopHub\View;
 
 class Error {
   public function showServerError() {

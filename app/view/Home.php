@@ -1,6 +1,6 @@
 <?php
 
-namespace View;
+namespace PopHub\View;
 
 class Home {
   public function showHome() {

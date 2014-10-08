@@ -1,7 +1,7 @@
 <?php
 
-require './controller/Routing.php';
+use PopHub\Controller;
 
-$router = new \Controller\Routers;
+$router = new Controller\Router;
 
 return $router;
