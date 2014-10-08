@@ -20,3 +20,7 @@ Tests for "helpers" are located at `path/to/pophub/kagu/tests/`
 To run the tests just locate to `path/to/pophub/` and type `vendor/bin/phpunit app/tests/`
 
 and for the "helpers" type `vendor/bin/phpunit kagu/tests/`
+
+### Test/Code coverage
+
+To get code coverage simply locate to `path/to/pophub/` and type `vendor/bin/phpunit --coverage-html ./report app/tests/` and PHPUnit will generate a report for you.
