@@ -2,9 +2,6 @@
 
 namespace Kagu\Http;
 
-require_once 'Response.php';
-require_once '../kagu/src/Exception/Exceptions.php';
-
 use Kagu\Http\Response;
 use Kagu\Exception\Exceptions\NotImplementedException;
 

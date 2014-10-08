@@ -2,10 +2,6 @@
 
 namespace PopHub\Model;
 
-require_once '../kagu/src/Http/Request.php';
-require_once '../kagu/src/Config/Config.php';
-require_once '../kagu/src/Exception/Exceptions.php';
-
 use Kagu\Http\Request;
 use Kagu\Http\Response;
 use Kagu\Config\Config;
@@ -23,7 +19,7 @@ class Github {
   private $githubCallbackUrl;
 
   public function __construct() {
-    $config = new Config("../app/config/app.php");
+    $config = new Config(__DIR__."/../config/app.php");
 
     if ($config->get("GITHUB_CLIENT_ID") == null) {
       throw new MissingCredentialsException("GITHUB_CLIENT_ID needs to be set!");
@@ -70,7 +66,7 @@ class Github {
 
     $body = json_decode($response->getBody());
 
-    $this->rateLimitExceeded($response);
+    // $this->rateLimitExceeded($response);
 
     return array(
       "body" => $body,
