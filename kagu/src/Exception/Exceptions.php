@@ -1,6 +1,6 @@
 <?php
 
-namespace Kagu\Exception\Exceptions;
+namespace Kagu\Exception;
 
 /**
  * All the Exceptions for the Kagu package

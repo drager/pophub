@@ -3,7 +3,7 @@
 namespace PopHub\Controller;
 
 require_once '../vendor/autoload.php';
-require_once '../kagu/src/Config/Config.php';
+// require_once '../kagu/src/Config/Config.php';
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing;

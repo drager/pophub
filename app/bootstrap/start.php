@@ -22,4 +22,4 @@ $loader->addNamespace('PopHub\View', $appPath."view/");
 // Kagu things
 $loader->addNamespace('Kagu\Http', $kaguPath."Http/");
 $loader->addNamespace('Kagu\Config', $kaguPath."Config/");
-$loader->addNamespace('Kagu\Exceptions', $kaguPath."Exception/");
+$loader->addNamespace('Kagu\Exception', $kaguPath."Exception/");

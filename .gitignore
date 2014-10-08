@@ -10,5 +10,6 @@
 data.json
 data.txt
 
+report/
 vendor/
 composer.lock

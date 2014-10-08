@@ -5,8 +5,10 @@ namespace PopHub\Model;
 use Kagu\Http\Request;
 use Kagu\Http\Response;
 use Kagu\Config\Config;
-use Kagu\Exception\Exceptions\MissingCredentialsException;
-use Kagu\Exception\Exceptions\RateLimitExceededException;
+use Kagu\Exception\MissingCredentialsException;
+// use Kagu\Exception;
+
+require_once __DIR__."/../../kagu/src/Exception/Exceptions.php";
 
 class Github {
 
@@ -18,31 +20,31 @@ class Github {
 
   private $githubCallbackUrl;
 
-  public function __construct() {
-    $config = new Config(__DIR__."/../config/app.php");
+  public function __construct($githubClientID, $githubClientSecret, $githubCallbackUrl) {
+    $this->githubClientID = $githubClientID;
+    $this->githubClientSecret = $githubClientSecret;
+    $this->githubCallbackUrl = $githubCallbackUrl;
+    // $this->debug = $config->get("DEBUG");
 
-    if ($config->get("GITHUB_CLIENT_ID") == null) {
-      throw new MissingCredentialsException("GITHUB_CLIENT_ID needs to be set!");
-    }
-    if ($config->get("GITHUB_CLIENT_SECRET") == null) {
-      throw new MissingCredentialsException("GITHUB_CLIENT_SECRET needs to be set!");
-    }
-    if ($config->get("GITHUB_CALLBACK_URL") == null) {
-      throw new MissingCredentialsException("GITHUB_CALLBACK_URL needs to be set!");
+    if ($this->githubClientID === null) {
+      throw new \InvalidArgumentException("GITHUB_CLIENT_ID needs to be set!");
     }
 
-    $this->githubClientID = $config->get("GITHUB_CLIENT_ID");
-    $this->githubClientSecret = $config->get("GITHUB_CLIENT_SECRET");
-    $this->githubCallbackUrl = $config->get("GITHUB_CALLBACK_URL");
-    $this->debug = $config->get("DEBUG");
+    if ($this->githubClientSecret === null) {
+      throw new \InvalidArgumentException("GITHUB_CLIENT_SECRET needs to be set!");
+    }
+
+    if ($this->githubCallbackUrl === null) {
+      throw new \InvalidArgumentException("GITHUB_CALLBACK_URL needs to be set!");
+    }
   }
 
-  public function authorize() {
-    $url = "https://github.com/login/oauth/authorize?client_id="
-      . $this->githubClientID  . "&redirect_uri=" . $this->githubCallbackUrl;
+  // public function authorize() {
+  //   $url = "https://github.com/login/oauth/authorize?client_id="
+  //     . $this->githubClientID  . "&redirect_uri=" . $this->githubCallbackUrl;
 
-    return $url;
-  }
+  //   return $url;
+  // }
 
   public function getAllUsers($page = null, $sortBy = "followers") {
     # TODO: Better urls…
@@ -79,27 +81,27 @@ class Github {
     $request = new Request($url);
     $response = $request->performRequest(); 
 
-    $this->rateLimitExceeded($response);
+    // $this->rateLimitExceeded($response);
 
     return json_decode($response->getBody());
   }
 
   public function getUsersRepos($username) {
-    $url = "https://api.github.com/users/" . $username . "/repos";
+    $url = "https://api.github.com/users/" . $username . "/repos?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
     $request = new Request($url);
     $response = $request->performRequest();
 
-    $this->rateLimitExceeded($response);
+    // $this->rateLimitExceeded($response);
 
     return json_decode($response->getBody());
   }
 
   public function getUserFollowers($username) {
-    $url = "https://api.github.com/users/" . $username . "/followers";
+    $url = "https://api.github.com/users/" . $username . "/followers?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
     $request = new Request($url);
     $response = $request->performRequest();
 
-    $this->rateLimitExceeded($response);
+    // $this->rateLimitExceeded($response);
 
     return json_decode($response->getBody());
   }
@@ -127,23 +129,23 @@ class Github {
    * @param Response $response 
    * @throws RateLimitExceededException
    */
-  private function rateLimitExceeded(Response $response) {
-    $numberOfCalls = $response->getHeader("X-RateLimit-Limit");
-    $remainingCalls = $response->getHeader("X-RateLimit-Remaining");
+  // private function rateLimitExceeded(Response $response) {
+  //   $numberOfCalls = $response->getHeader("X-RateLimit-Limit");
+  //   $remainingCalls = $response->getHeader("X-RateLimit-Remaining");
 
-    if ($this->debug === true) {
-      $timeRemaining = $response->getHeader("X-RateLimit-Reset");
-      $date = new \DateTime();
-      $date->setTimestamp($timeRemaining);
-      print("<pre>Number of calls: " . $numberOfCalls . "</pre>");
-      print("<pre>Number of calls left: " . $remainingCalls . "</pre>");
-      print("<pre>New set of calls available at: " . $date->format('Y-m-d H:i:s') . "</pre>");
-    }
+  //   if ($this->debug === true) {
+  //     $timeRemaining = $response->getHeader("X-RateLimit-Reset");
+  //     $date = new \DateTime();
+  //     $date->setTimestamp($timeRemaining);
+  //     print("<pre>Number of calls: " . $numberOfCalls . "</pre>");
+  //     print("<pre>Number of calls left: " . $remainingCalls . "</pre>");
+  //     print("<pre>New set of calls available at: " . $date->format('Y-m-d H:i:s') . "</pre>");
+  //   }
 
-    if ($numberOfCalls !== null && $remainingCalls !== null
-      && $remainingCalls == 0) {
-      throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
-    }
-  }
+  //   if ($numberOfCalls !== null && $remainingCalls !== null
+  //     && $remainingCalls == 0) {
+  //     throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
+  //   }
+  // }
 
 }

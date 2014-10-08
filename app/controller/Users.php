@@ -2,6 +2,8 @@
 
 namespace PopHub\Controller;
 
+use Kagu\Config\Config;
+
 use PopHub\Model;
 use PopHub\View;
 
@@ -20,7 +22,8 @@ class Users {
    * Constructor
    */
   function __construct() {
-    $this->model = new Model\Github();
+    $config = new Config(__DIR__."/../config/app.php");
+    $this->model = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));
     $this->view = new View\Users();
     $this->errorView = new View\Error();
   }
