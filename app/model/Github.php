@@ -39,34 +39,81 @@ class Github {
     }
   }
 
-  // public function authorize() {
-  //   $url = "https://github.com/login/oauth/authorize?client_id="
-  //     . $this->githubClientID  . "&redirect_uri=" . $this->githubCallbackUrl;
+  public function authorize() {
+    $url = "https://github.com/login/oauth/authorize?client_id="
+      . $this->githubClientID  . "&redirect_uri=" . $this->githubCallbackUrl;
 
-  //   return $url;
-  // }
+    var_dump($url);
 
-  public function getAllUsers($page = null, $sortBy = "followers") {
+    $request = new Request($url);
+    $response = $request->performRequest();
+
+    $body = json_decode($response->getBody());
+
+    return $url;
+  }
+
+  public function postAccessToken($code) {
+    $url = "https://github.com/login/oauth/access_token?client_id="
+      . $this->githubClientID  . "&client_secret=" . $this->githubClientSecret
+      . "&code=" . $code;
+
+    var_dump($code);
+
+    $request = new Request($url);
+    $response = $request->performRequest("POST", array("code" => $code));
+
+    $token = $response->getBody();
+
+    return $token;
+  }
+
+  public function getLoggedInUser($accessToken) {
+    $url = "https://api.github.com/user?{$accessToken}&client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+
+    $request = new Request($url);
+    $response = $request->performRequest();
+
+    $body = json_decode($response->getBody());
+
+    return $body;
+  }
+
+  public function getAllUsers($page = null, $sortBy = "followers", $language = null) {
     # TODO: Better urls…
-    $url = "https://api.github.com/search/users?q={$sortBy}";
+    #https://api.github.com/search/users?q=language:php&followers:%3E=312
+    if ($language !== null) {
+      $url = "https://api.github.com/search/users?q=language";
+      $url .= urlencode(":".$language);
+      $url .= "&{$sortBy}";
+    } else {
+      $url = "https://api.github.com/search/users?q={$sortBy}";
+    }
+
     if ($sortBy === "repos") {
       $url .= urlencode(":>=228");
+    } else {
+      $url .= urlencode(":>=3");
     }
-    else {
-      $url .= urlencode(":>=312");
-    }
+
     $url .= "&order=asc&client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
     $url .= "&per_page=100";
     if ($page) {
       $url .= "&page=" . $page;
     }
 
+    // var_dump($url);
+
     $request = new Request($url);
     $response = $request->performRequest();
+
+    // var_dump($response->getHeaders());
 
     $pages = $this->getPaging($response);
 
     $body = json_decode($response->getBody());
+
+    // var_dump($body);
 
     // $this->rateLimitExceeded($response);
 

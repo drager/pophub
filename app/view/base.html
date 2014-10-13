@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="ROBOTS" content="ALL" />
+  <meta content="PopHub">
+  <meta content="PopHub" name="description">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}{% endblock %}PopHub</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/pophub.css">
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="top-nav">
+    <h1 class="site-brand"><a href="/">PopHub</a></h1>
+    <ul>
+      <li><span class="glyphicon glyphicon-home"></span><a href="/">Home</a></li>
+      <li><span class="glyphicon glyphicon-user"></span><a href="/users/">All users</a></li>
+      {% if authenticated %}
+        <li class="right"><span class="glyphicon glyphicon-off"></span><a href="/logout/">Logout</a></li>
+        <li class="right"><span class="glyphicon glyphicon-user"></span><a href="/user/">Your profile</a></li>
+      {% else %}
+        <li class="right"><span class="glyphicon glyphicon-lock"></span><a href="/login/">Sign in with GitHub</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

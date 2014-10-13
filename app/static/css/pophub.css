@@ -1,0 +1,67 @@
+.top-nav {
+  background: #40454f;
+  width: 100%;
+  height: auto;
+  display: block;
+  min-height: 90px;
+  color: #FFF;
+  line-height: 60px;
+}
+
+.site-brand {
+  float: left;
+  font-size: 2em;
+  margin: 1em 0 1em 1em;
+  height: 30px;
+}
+
+.top-nav a {
+  color: #FFF;
+}
+
+.top-nav a:hover {
+  text-decoration: none;
+  color: #FFF;
+}
+
+.top-nav ul {
+  float: left;
+  width: 85%;
+  list-style-type: none;
+  padding: 0;
+  margin: 1em 0 1em 1em;
+}
+
+.top-nav ul li {
+  display: inline-block;
+  margin: 0 0 0 2em;
+}
+
+.top-nav ul li.right {
+  float: right;
+}
+
+.top-nav ul li a {
+  color: #FFF;
+  margin: 0 0 0 0.5em;
+}
+
+.top-nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.thumbnail img {
+  border-radius: 4px;
+}
+
+
+h2 a {
+  color: #40454f;
+}
+
+.caption h2 {
+  overflow: hidden;
+}
+
+
+

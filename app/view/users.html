@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Users - {% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center">
+        <ul class="pagination">
+          {% if pages.first %}
+            <li><a href="?page={{ pages.first }}">First page</a></li>
+          {% endif %}
+
+          {% if pages.prev %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ pages.prev }}">&laquo;</a></li>
+            {% else %}
+              <li><a href="?page={{ pages.prev }}">&laquo;</a></li>
+            {% endif %}
+          {% endif %}
+
+          {% for i in 1..pages.last %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
+            {% else %}
+              <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if pages.next %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ pages.next }}">&raquo;</a></li>
+            {% else %}
+              <li><a href="?page={{ pages.next }}">&raquo;</a></li>
+            {% endif %}
+          {% endif %}
+
+          {% if pages.last %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ pages.last }}">Last page</a></li>
+            {% else %}
+              <li><a href="?page={{ pages.last }}">Last page</a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% if sort %}
+    <a href="/users/" class="btn btn-primary" role="button">Sort by followers (default)</a>
+  {% else %}
+    <a href="?sort_by=repos" class="btn btn-primary" role="button">Sort by repos</a>
+  {% endif %}
+  
+
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      Sort by language <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      {% if sort %}
+        <li><a href="?sort_by=repos&amp;language=php">PHP</a></li>
+        <li><a href="?sort_by=repos&amp;language=ruby">Ruby</a></li>
+        <li><a href="?sort_by=repos&amp;language=python">Python</a></li>
+      {% else %}
+        <li><a href="?language=php">PHP</a></li>
+        <li><a href="?language=ruby">Ruby</a></li>
+        <li><a href="?language=python">Python</a></li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <div class="row">
+    {% for user in users.items %}
+          
+    <div class="col-xs-6 col-md-2">
+      <div class="thumbnail">
+        <img src='{{ user.avatar_url }}&amp;s=128' height='128' />
+        <div class="caption">
+          <h2><a href='/users/{{ user.login }}'>{{ user.login }}</a></h2>
+          {{ user.followers }}
+          {{ user.public_repos }}
+          {% if authenticated %}
+            <p>
+
+              <a href="/users/" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-user"></span> Follow</a>
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  
+    {% endfor %}
+  </div>
+
+    <div class="row">
+    <div class="col-md-12">
+      <div class="text-center">
+        <ul class="pagination">
+          {% if pages.first %}
+            <li><a href="?page={{ pages.first }}">First page</a></li>
+          {% endif %}
+
+          {% if pages.prev %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ pages.prev }}">&laquo;</a></li>
+            {% else %}
+              <li><a href="?page={{ pages.prev }}">&laquo;</a></li>
+            {% endif %}
+          {% endif %}
+
+          {% for i in 1..pages.last %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
+            {% else %}
+              <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if pages.next %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ pages.next }}">&raquo;</a></li>
+            {% else %}
+              <li><a href="?page={{ pages.next }}">&raquo;</a></li>
+            {% endif %}
+          {% endif %}
+
+          {% if pages.last %}
+            {% if sort %}
+              <li><a href="?sort_by={{ sort }}&amp;page={{ pages.last }}">Last page</a></li>
+            {% else %}
+              <li><a href="?page={{ pages.last }}">Last page</a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

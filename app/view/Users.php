@@ -25,7 +25,7 @@ class Users {
     // print $context["users"]->total_count;;
 
     // Add pagination at the top.
-    $this->constructPagnation($context["pages"]);    
+    $this->constructPagnation($context["pages"]);  
 
     if ($this->getSortBy() !== "repos") {
       print("<a href='?sort_by=repos'>Sortera på repos</a>");
@@ -33,6 +33,15 @@ class Users {
     else {
       print("<a href='/users/'>Sortera på följare (default)</a>");
     }
+
+    print("
+      <select name='select'>
+        <option value='' selected>Sortera på språk</option> 
+        <option value='php'>PHP</option>
+        <option value='ruby'>Ruby</option>
+        <option value='python'>Python</option>
+      </select>
+    ");
 
     foreach ($context["users"]->items as $count => $user) {
       print("<h2><a href='/users/$user->login'>" . $user->login . "</a></h2>");

@@ -23,3 +23,4 @@ $loader->addNamespace('PopHub\View', $appPath."view/");
 $loader->addNamespace('Kagu\Http', $kaguPath."Http/");
 $loader->addNamespace('Kagu\Config', $kaguPath."Config/");
 $loader->addNamespace('Kagu\Exception', $kaguPath."Exception/");
+$loader->addNamespace('Kagu\Controller', $kaguPath."Controller/");

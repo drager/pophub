@@ -3,8 +3,10 @@
 namespace PopHub\Controller;
 
 use PopHub\View;
+use PopHub\Model\Session;
 
-class Home {
+
+class Home extends BaseController {
   private $view;
 
   function __construct() {
@@ -12,6 +14,10 @@ class Home {
   }
 
   public function index() {
-    return $this->view->showHome();
+    $auth = Session::get("access_token");
+
+    echo $this->render('home.html', array(
+      "authenticated" => $auth
+    ));
   }
 }

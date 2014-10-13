@@ -54,10 +54,10 @@ class Request {
    * @param Array $options
    * @return Response object
    */
-  public function performRequest($method = self::METHOD_GET) {
+  public function performRequest($method = self::METHOD_GET, array $data = null) {
     switch ($method) {
       case self::METHOD_POST:
-        return $this->post($this->url);
+        return $this->post($this->url, $data);
         break;
       case self::METHOD_PUT:
         return $this->put($this->url);
@@ -78,7 +78,18 @@ class Request {
    * @param Integer $follow_location, defaults to 0.
    * @return Array
    */
-  private function getContext($method = self::METHOD_GET, $ignore_errors = true, $follow_location = 0) {
+  private function getContext($method = self::METHOD_GET, $ignore_errors = true, $follow_location = 0, array $data = null) {
+    if ($method === self::METHOD_POST) {
+      $context = array(
+        "http" => array(
+          "method"           => $method,
+          "user_agent"       => self::NAME . self::VERSION,
+          "ignore_errors"    => $ignore_errors,
+          "follow_location"  => $follow_location,
+          "content"          => $data    
+        )
+      );
+    }
     $context = array(
       "http" => array(
         "method"           => $method,
@@ -123,8 +134,18 @@ class Request {
    * @param String $url
    * @return Response object
    */
-  private function post($url) {
-    throw new NotImplementedException("The " . self::METHOD_POST . " METHOD is not implemented just yet!");
+  private function post($url, array $data) {
+    $response = file_get_contents($url, false, $this->createStream($this->getContext(self::METHOD_POST), $data));
+
+    $data = explode("\r", $response);
+
+    $body = array_pop($data);
+
+    if ($response === false) {
+      throw new \Exception("Server not responding");
+    }
+
+    return new Response($body, $http_response_header);
   }
 
   /**

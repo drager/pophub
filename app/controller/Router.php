@@ -3,14 +3,13 @@
 namespace PopHub\Controller;
 
 require_once '../vendor/autoload.php';
-// require_once '../kagu/src/Config/Config.php';
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing;
 use Klein\Klein;
 
 use Kagu\Config\Config;
+
 use PopHub\Controller;
+use PopHub\Model\Session;
 
 class Router {
   private $config;
@@ -25,13 +24,34 @@ class Router {
     });
 
     $klein->respond("GET", "/login/?", function ($request, $response) {
-      $controller = new Login();
+      $controller = new Auth();
       $url = $controller->index();
       $response->redirect($url);
     });
 
     $klein->respond("GET", "/github-callback/?", function ($request, $response) {
-      // $response->redirect("localhost:9999");
+      if ($request->code) {
+        $controller = new Auth();
+        Session::set("access_token", $controller->getToken($request->code));
+        return $response->redirect("/user/");
+      }
+      return $response->redirect("/");
+    });
+
+    $klein->respond("GET", "/user/?", function ($request, $response) {
+      $controller = new Auth();
+      $token = Session::get("access_token");
+
+      if ($token) {
+        return $controller->loggedInUser($token);
+      }
+
+      return $response->redirect("/");
+    });
+
+    $klein->respond("GET", "/logout/?", function ($request, $response) {
+      Session::destroy("access_token");
+      return $response->redirect("/");
     });
 
     $klein->with("/users", function () use ($klein) {

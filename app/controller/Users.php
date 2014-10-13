@@ -5,9 +5,10 @@ namespace PopHub\Controller;
 use Kagu\Config\Config;
 
 use PopHub\Model;
+use PopHub\Model\Session;
 use PopHub\View;
 
-class Users {
+class Users extends BaseController {
   /**
    * @var Userview
    */
@@ -43,9 +44,45 @@ class Users {
       $users = $this->model->getAllUsers($page);
     }
 
-    return $this->view->showAllUsers(array(
+    $pages = $users["pages"];
+
+    if (isset($pages["first"])) {
+      $pages["first"] = preg_replace('/^.*page=\s*/', '', $pages["first"]);
+    }
+
+    if (isset($pages["prev"])) {
+      $pages["prev"] = preg_replace('/^.*page=\s*/', '', $pages["prev"]);
+    }
+    if (isset($pages["next"])) {
+      $pages["next"] = preg_replace('/^.*page=\s*/', '', $pages["next"]);
+    }
+    if (isset($pages["last"])) {
+      $pages["last"] = preg_replace('/^.*page=\s*/', '', $pages["last"]);
+    }
+
+    $numOfPages = $pages["last"];
+
+    // var_dump($numOfPages);
+
+    // RESPONSE FEL FRÅN GITHUB?
+
+    // var_dump($users["body"]->total_count);
+
+    // var_dump($numOfPages);
+
+    $sort = null;
+
+    if (isset($_GET["sort_by"])) {
+      $sort = $_GET["sort_by"];
+    }
+
+    $auth = Session::get("access_token");
+
+    echo $this->render('users.html', array(
       "users" => $users["body"],
-      "pages" => $users["pages"]
+      "pages" => $pages,
+      "sort" => $sort,
+      "authenticated" => $auth
     ));
   }
 
