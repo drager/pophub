@@ -11,8 +11,10 @@ class BaseController extends Controller {
   protected function setup() {
     $this->setTemplatePath(__DIR__."/../view/");
 
-    $this->loader = new Twig_Loader_Filesystem($this->template);
+    $loader = new Twig_Loader_Filesystem($this->template);
 
-    $this->engine = new Twig_Environment($this->loader);
+    $this->engine = new Twig_Environment($loader);
+
+    $this->urlTo();
   }
 }

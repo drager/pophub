@@ -2,7 +2,6 @@
 
 namespace PopHub\Controller;
 
-
 use Kagu\Config\Config;
 
 use PopHub\Model;

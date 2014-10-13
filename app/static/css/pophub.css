@@ -59,8 +59,15 @@ h2 a {
   color: #40454f;
 }
 
+.thumbnail {
+  margin-top: 2em;
+}
+
 .caption h2 {
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.5em;
 }
 
 

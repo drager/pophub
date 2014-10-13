@@ -23,14 +23,14 @@
             {% if user.location %}
               <li><span class="glyphicon glyphicon-map-marker"></span>{{ user.location }}</li>
             {% endif %}
-            <li><span class="glyphicon glyphicon-time"></span>{{ user.created_at }}</li>
+            <li><span class="glyphicon glyphicon-time"></span>{{ user.created_at|date("F j, Y") }}</li>
           </ul>
         </div>
       </div>
     </div>
   
     <div class="col-sm-6 col-md-6">  
-      <h2>Dessa personer följer du på PopHub</h2>
+      <h2>People you follow on PopHub</h2>
     </div>
   </div>
 {% endblock %}
