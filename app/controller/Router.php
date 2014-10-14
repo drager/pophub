@@ -14,16 +14,26 @@ use PopHub\Model\Session;
 class Router {
   private $config;
 
+  private $homePath = "/";
+
+  private $userPath = "/user/";
+
+  private $usersPath = "/users";
+
+  private $loginPath = "/login/";
+
+  private $logoutPath = "/logout/";
+
   public function doRoute() {
     $klein = new Klein();
     $this->config = new Config("../app/config/app.php");
 
-    $klein->respond("GET", "/", function () {
+    $klein->respond("GET", $this->homePath, function () {
       $controller = new Home();
       $controller->index();
     });
 
-    $klein->respond("GET", "/login/?", function ($request, $response) {
+    $klein->respond("GET", $this->loginPath . "?", function ($request, $response) {
       $controller = new Auth();
       $url = $controller->index();
       $response->redirect($url);
@@ -33,12 +43,12 @@ class Router {
       if ($request->code) {
         $controller = new Auth();
         $controller->getToken($request->code);
-        return $response->redirect("/user/");
+        return $response->redirect($this->userPath);
       }
-      return $response->redirect("/");
+      return $response->redirect($this->homePath);
     });
 
-    $klein->respond("GET", "/user/?", function ($request, $response) {
+    $klein->respond("GET", $this->userPath . "?", function ($request, $response) {
       $controller = new Auth();
       $token = Session::get("access_token");
 
@@ -46,15 +56,15 @@ class Router {
         return $controller->loggedInUser($token);
       }
 
-      return $response->redirect("/");
+      return $response->redirect($this->homePath);
     });
 
-    $klein->respond("GET", "/logout/?", function ($request, $response) {
+    $klein->respond("GET", $this->logoutPath . "?", function ($request, $response) {
       Session::destroy("access_token");
-      return $response->redirect("/");
+      return $response->redirect($this->homePath);
     });
 
-    $klein->with("/users", function () use ($klein) {
+    $klein->with($this->usersPath, function () use ($klein) {
 
       $klein->respond("GET", "/?", function ($request, $response) {
         $controller = new Users();
