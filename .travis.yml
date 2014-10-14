@@ -15,7 +15,7 @@ script:
   - vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml app/
 
 after-script:
-  - vendor/bin/coveralls
+  - vendor/bin/coveralls -v
 
 # matrix:
 #   fast_finish: true
