@@ -12,7 +12,7 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - vendor/bin/phpunit --verbose app/
+  - vendor/bin/phpunit --verbose -c phpunit.xml.dist app/
 
 after-script:
   - vendor/bin/coveralls
