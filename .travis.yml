@@ -17,5 +17,5 @@ script:
 after-script:
   - vendor/bin/coveralls
 
-matrix:
-  fast_finish: true
+# matrix:
+#   fast_finish: true
