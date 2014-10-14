@@ -4,6 +4,8 @@ Follow the most popular users on Github.
 
 ![Travis CI](https://travis-ci.org/jh222xk/pophub.svg?branch=master)
 
+[![Coverage Status](https://img.shields.io/coveralls/jh222xk/pophub.svg)](https://coveralls.io/r/jh222xk/pophub)
+
 ## Local version
 
 ### How to get started
