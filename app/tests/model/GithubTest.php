@@ -82,9 +82,18 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $sortBy = "repos";
 
-    $expectedArray = array("login" => "xgrommx");
+    $users = $this->github->getAllUsers($page, $sortBy)["body"]->items;
 
-    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers($page, $sortBy)["body"]->items[1]->login);
+    $expectedArray = array("login" => "boostbob");
+
+    $hasFound = false;
+    foreach($users as $user) {
+      if ($expectedArray["login"] == $user->login) {
+        $hasFound = true;
+      }
+    }
+
+    $this->assertTrue($hasFound);
   }
 
   public function testCanGetSingleUser() {
@@ -109,7 +118,7 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
       if ($expectedRepoArray["name"] == $repo->name) {
         $hasFound = true;
       }
-    } 
+    }
 
     $this->assertTrue($hasFound);
   }
