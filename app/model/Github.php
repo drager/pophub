@@ -6,9 +6,6 @@ use Kagu\Http\Request;
 use Kagu\Http\Response;
 use Kagu\Config\Config;
 use Kagu\Exception\MissingCredentialsException;
-// use Kagu\Exception;
-
-require_once __DIR__."/../../kagu/src/Exception/Exceptions.php";
 
 class Github {
 
@@ -43,12 +40,7 @@ class Github {
     $url = "https://github.com/login/oauth/authorize?client_id="
       . $this->githubClientID  . "&redirect_uri=" . $this->githubCallbackUrl;
 
-    var_dump($url);
-
     $request = new Request($url);
-    $response = $request->performRequest();
-
-    $body = json_decode($response->getBody());
 
     return $url;
   }
@@ -93,7 +85,7 @@ class Github {
     if ($sortBy === "repos") {
       $url .= urlencode(":>=228");
     } else {
-      $url .= urlencode(":>=3");
+      $url .= urlencode(":>=312");
     }
 
     $url .= "&order=asc&client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";

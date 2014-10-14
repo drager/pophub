@@ -21,8 +21,8 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
   private $github;
 
   public function setUp() {
-    $config = new Config\Config(__DIR__."/../../config/app.php");
-    $this->github = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));
+    $this->config = new Config\Config(__DIR__."/../../config/app.php");
+    $this->github = new Model\Github($this->config->get("GITHUB_CLIENT_ID"), $this->config->get("GITHUB_CLIENT_SECRET"), $this->config->get("GITHUB_CALLBACK_URL"));
   }
 
   public function tearDown() {
@@ -123,6 +123,12 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
     $this->assertTrue($hasFound);
   }
 
+  public function testCanGetAllUsersWithLanguageSorting() {
+    $expectedArray = array("login" => "JeffreyWay");
+
+    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers(null, null, "php")["body"]->items[1]->login);
+  }
+
   public function testCanGetUserFollowers() {
     $username = "torvalds";
 
@@ -131,6 +137,17 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
     $followers = $this->github->getUserFollowers($username);
 
     $this->assertEquals($expectedArray["login"], $followers[0]->login);
+  }
+
+  public function testUserCanGetAuthenticated() {
+    $auth = $this->github->authorize();
+
+    $url = "https://github.com/login/oauth/authorize?client_id="
+      . $this->config->get("GITHUB_CLIENT_ID")  . "&redirect_uri=" . $this->config->get("GITHUB_CALLBACK_URL");
+
+    $this->assertEquals($auth, $url);
+
+    $token = $this->github->postAccessToken("some_token");
   }
 
 }
