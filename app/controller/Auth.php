@@ -26,17 +26,21 @@ class Auth extends BaseController {
   public function index() {
     $auth = $this->model->authorize();
 
-    var_dump($auth);
+    // var_dump($auth);
 
     return $auth;
   }
 
   public function getToken($code) {
-    $token = $this->model->postAccessToken($code);
+    try {
+      $token = $this->model->postAccessToken($code);
+    } catch (\Exception $e) {
+      return;
+    }
 
     Session::set("access_token", $token);
 
-    var_dump($token);
+    // var_dump($token);
 
     return $token;
   }
@@ -45,6 +49,8 @@ class Auth extends BaseController {
     $user = $this->model->getLoggedInUser($accessToken);
 
     $auth = Session::get("access_token");
+
+    // var_dump($_SESSION);
 
     echo $this->render('logged_in.html', array(
       "user" => $user,

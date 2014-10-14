@@ -139,7 +139,11 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals($expectedArray["login"], $followers[0]->login);
   }
 
-  public function testUserCanGetAuthenticated() {
+  /**
+  * @expectedException        Exception
+  * @expectedExceptionMessage Code invalid!
+  */
+  public function testUserCanNOTGetAuthenticatedWithInvalidToken() {
     $auth = $this->github->authorize();
 
     $url = "https://github.com/login/oauth/authorize?client_id="

@@ -50,12 +50,18 @@ class Github {
       . $this->githubClientID  . "&client_secret=" . $this->githubClientSecret
       . "&code=" . $code;
 
-    var_dump($code);
+    // var_dump($code);
+
 
     $request = new Request($url);
     $response = $request->performRequest("POST", array("code" => $code));
 
     $token = $response->getBody();
+
+    // Check if we have a valid token
+    if (preg_match("#^access_token=#", $token) === 0) {
+      throw new \Exception("Code invalid!");
+    }
 
     return $token;
   }
@@ -67,6 +73,8 @@ class Github {
     $response = $request->performRequest();
 
     $body = json_decode($response->getBody());
+
+    var_dump($url);
 
     return $body;
   }
