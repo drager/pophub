@@ -10,7 +10,12 @@ before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
 
-script: vendor/bin/phpunit --verbose app/
+script:
+  - mkdir -p build/logs
+  - vendor/bin/phpunit --verbose app/
+
+after-script:
+  - vendor/bin/coveralls
 
 matrix:
   fast_finish: true
