@@ -2,6 +2,8 @@ PopHub
 ======
 Follow the most popular users on Github.
 
+![Travis CI](https://travis-ci.org/jh222xk/pophub.svg?branch=master)
+
 ## Local version
 
 ### How to get started
