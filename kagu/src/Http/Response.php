@@ -2,7 +2,9 @@
 
 namespace Kagu\Http;
 
-use Kagu\Exception\Exceptions\HttpStatus404Exception;
+require_once __DIR__.'/../Exception/Exceptions.php';
+
+use Kagu\Exception\HttpStatus404Exception;
 
 /**
  * Http Response
