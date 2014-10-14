@@ -82,7 +82,7 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $sortBy = "repos";
 
-    $expectedArray = array("login" => "boostbob");
+    $expectedArray = array("login" => "xgrommx");
 
     $this->assertEquals($expectedArray["login"], $this->github->getAllUsers($page, $sortBy)["body"]->items[1]->login);
   }
