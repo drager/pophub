@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.login }} - User - {% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-6 col-md-3">
+
+      <div class="thumbnail">
+        <img src='{{ user.avatar_url }}&amp;s=250' height='250' />
+        <div class="caption">
+          <h2>{{ user.login }}</h2>
+          <h3>{{ user.name }}</h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li class="nav-divider"></li>
+            {% if user.email %}
+              <li>
+                <a href="mailto:{{ user.email }}">
+                  <span class="glyphicon glyphicon-envelope"></span>{{ user.email }}
+                </a>
+              </li>
+            {% endif %}
+            {% if user.location %}
+              <li><span class="glyphicon glyphicon-map-marker"></span>{{ user.location }}</li>
+            {% endif %}
+            <li><span class="glyphicon glyphicon-time"></span>{{ user.created_at|date("F j, Y") }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-sm-6 col-md-4">  
+      <h2>Repos on Github</h2>
+      <ul>
+        {% for repo in repos %}
+          <li><a href="https://github.com/{{ repo.owner.login }}/{{ repo.name }}">{{ repo.name }}</a><span class="glyphicon glyphicon-share"></span></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-sm-6 col-md-4">  
+      <h2>Followers on Github</h2>
+      <ul>
+        {% for follower in followers %}
+          <li><a href="{{ url_to('users') }}/{{ follower.login }}">{{ follower.login }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

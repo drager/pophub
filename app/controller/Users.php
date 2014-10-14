@@ -100,10 +100,13 @@ class Users extends BaseController {
       return $this->errorView->showPageNotFound("/users/" . $user);
     }
 
-    return $this->view->show(array(
+    $auth = Session::get("access_token");
+
+    echo $this->render('show_user.html', array(
       "user" => $userData,
       "repos" => $repos,
-      "followers" => $followers
+      "followers" => $followers,
+      "authenticated" => $auth
     ));
   }
 }

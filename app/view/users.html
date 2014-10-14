@@ -82,7 +82,7 @@
       <div class="thumbnail">
         <img src="{{ user.avatar_url }}&amp;s=128" height="128" width="155" />
         <div class="caption">
-          <h2><a href="{{ url_to('users') }}{{ user.login }}">{{ user.login }}</a></h2>
+          <h2><a href="{{ url_to('users') }}/{{ user.login }}">{{ user.login }}</a></h2>
           {{ user.followers }}
           {{ user.public_repos }}
           {% if authenticated %}

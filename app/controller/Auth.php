@@ -34,6 +34,8 @@ class Auth extends BaseController {
   public function getToken($code) {
     $token = $this->model->postAccessToken($code);
 
+    Session::set("access_token", $token);
+
     var_dump($token);
 
     return $token;

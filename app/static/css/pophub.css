@@ -6,6 +6,7 @@
   min-height: 90px;
   color: #FFF;
   line-height: 60px;
+  /*margin-bottom: 2em;*/
 }
 
 .site-brand {
@@ -22,6 +23,23 @@
 .top-nav a:hover {
   text-decoration: none;
   color: #FFF;
+}
+
+@media (max-width: 480px) {
+
+  .top-nav span {
+    float: left;
+    margin: 0.75em 0.5em 0.5em 0.5em;
+  }
+
+  .top-nav span:hover {
+    color: blue;
+  }
+
+  .nav > li > a:hover, .nav > li > a:focus {
+    background-color: #5F7091;
+    text-decoration: none;
+  }
 }
 
 .top-nav ul {

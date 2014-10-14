@@ -32,7 +32,7 @@ class Router {
     $klein->respond("GET", "/github-callback/?", function ($request, $response) {
       if ($request->code) {
         $controller = new Auth();
-        Session::set("access_token", $controller->getToken($request->code));
+        $controller->getToken($request->code);
         return $response->redirect("/user/");
       }
       return $response->redirect("/");
