@@ -3,6 +3,7 @@
 namespace PopHub\Controller;
 
 use Kagu\Config\Config;
+use Kagu\Exception\HttpStatus404Exception;
 
 use PopHub\Model;
 use PopHub\Model\Session;
@@ -31,17 +32,20 @@ class Users extends BaseController {
 
   /**
    * Index action, listing all the users.
-   * @param Integer $page 
    * @return The show all users view
    */
   public function index() {
     $page = $this->view->getPage();
-    if ($this->view->getSortBy() === "repos" ) {
-      $sortBy = $this->view->getSortBy();
-      $users = $this->model->getAllUsers($page, $sortBy);
-    }
-    else {
-      $users = $this->model->getAllUsers($page);
+
+    try {
+      if ($this->view->getSortBy() === "repos" ) {
+        $sortBy = $this->view->getSortBy();
+        $users = $this->model->getAllUsers($page, $sortBy);
+      } else {
+        $users = $this->model->getAllUsers($page);
+      }
+    } catch (HttpStatus404Exception $e) {
+      return $this->errorView->showPageNotFound("/users/?page=" . $page);
     }
 
     $pages = $users["pages"];
@@ -60,13 +64,19 @@ class Users extends BaseController {
       $pages["last"] = preg_replace('/^.*page=\s*/', '', $pages["last"]);
     }
 
-    $numOfPages = $pages["last"];
+    $numOfPages = isset($pages["last"]) ? $pages["last"] : $pages["prev"] + 1;
 
-    // var_dump($numOfPages);
+    if ($page > $numOfPages) {
+      return $this->errorView->showPageNotFound("/users/?page=" . $page);
+    }
+
+    var_dump($numOfPages);
 
     // RESPONSE FEL FRÅN GITHUB?
 
-    // var_dump($users["body"]->total_count);
+    // ^GITHUB SKICKAR BARA UT 1000 RESULTAT…
+
+    var_dump($users["body"]->total_count);
 
     // var_dump($numOfPages);
 
@@ -81,6 +91,7 @@ class Users extends BaseController {
     echo $this->render('users.html', array(
       "users" => $users["body"],
       "pages" => $pages,
+      "num_of_pages" => $numOfPages,
       "sort" => $sort,
       "authenticated" => $auth
     ));

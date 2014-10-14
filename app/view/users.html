@@ -23,7 +23,7 @@
             {% endif %}
           {% endif %}
 
-          {% for i in 1..pages.last %}
+          {% for i in 1..num_of_pages %}
             {% if sort %}
               <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
             {% else %}
@@ -119,7 +119,7 @@
             {% endif %}
           {% endif %}
 
-          {% for i in 1..pages.last %}
+          {% for i in 1..num_of_pages %}
             {% if sort %}
               <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
             {% else %}
