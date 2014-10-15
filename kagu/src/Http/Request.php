@@ -10,7 +10,7 @@ use Kagu\Exception\Exceptions\NotImplementedException;
  * @package Kagu Http
  * @author Jesper Håkansson <jh222xk@student.lnu.se>
  */
-class Request {
+class Request implements HttpRequestAdapterInterface {
 
   private $url;
 
@@ -47,29 +47,6 @@ class Request {
    */
   public function getUrl() {
     return $this->url;
-  }
-
-  /**
-   * @param String $method
-   * @param Array $options
-   * @return Response object
-   */
-  public function performRequest($method = self::METHOD_GET, array $data = null) {
-    switch ($method) {
-      case self::METHOD_POST:
-        return $this->post($this->url, $data);
-        break;
-      case self::METHOD_PUT:
-        return $this->put($this->url);
-        break;
-      case self::METHOD_DELETE:
-        return $this->delete($this->url);
-        break;
-      default:
-        // Defaults to the get method.
-        return $this->get($this->url);
-        break;
-    }
   }
 
   /**
@@ -115,8 +92,8 @@ class Request {
    * @param Array $options
    * @return Response object
    */
-  private function get($url) {
-    $response = file_get_contents($url, false, $this->createStream($this->getContext()));
+  public function get() {
+    $response = file_get_contents($this->url, false, $this->createStream($this->getContext()));
 
     $data = explode("\r", $response);
 
@@ -134,8 +111,8 @@ class Request {
    * @param String $url
    * @return Response object
    */
-  private function post($url, array $data) {
-    $response = file_get_contents($url, false, $this->createStream($this->getContext(self::METHOD_POST), $data));
+  public function post(array $data) {
+    $response = file_get_contents($this->url, false, $this->createStream($this->getContext(self::METHOD_POST), $data));
 
     $data = explode("\r", $response);
 
@@ -153,7 +130,7 @@ class Request {
    * @param String $url
    * @return Response object
    */
-  private function put($url) {
+  public function put(array $data) {
     throw new NotImplementedException("The " . self::METHOD_PUT . " METHOD is not implemented just yet!");
   }
 
@@ -162,7 +139,7 @@ class Request {
    * @param String $url
    * @return Response object
    */
-  private function delete($url) {
+  public function delete() {
     throw new NotImplementedException("The " . self::METHOD_DELETE . " METHOD is not implemented just yet!");
   }
 }

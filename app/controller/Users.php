@@ -37,12 +37,18 @@ class Users extends BaseController {
   public function index() {
     $page = $this->view->getPage();
 
+    $language = $this->view->getLanguage();
+
     try {
-      if ($this->view->getSortBy() === "repos" ) {
-        $sortBy = $this->view->getSortBy();
-        $users = $this->model->getAllUsers($page, $sortBy);
+      if ($language !== null) {
+        $users = $this->model->getAllUsers($page, "followers", $language);
       } else {
-        $users = $this->model->getAllUsers($page);
+        if ($this->view->getSortBy() === "repos") {
+          $sortBy = $this->view->getSortBy();
+          $users = $this->model->getAllUsers($page, $sortBy);
+        } else {
+          $users = $this->model->getAllUsers($page);
+        }
       }
     } catch (HttpStatus404Exception $e) {
       return $this->errorView->showPageNotFound("/users/?page=" . $page);

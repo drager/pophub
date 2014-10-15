@@ -31,18 +31,27 @@
   
     <div class="col-sm-6 col-md-4">  
       <h2>Repos on Github</h2>
-      <ul>
+      <ul class="list-group">
         {% for repo in repos %}
-          <li><a href="https://github.com/{{ repo.owner.login }}/{{ repo.name }}">{{ repo.name }}</a><span class="glyphicon glyphicon-share"></span></li>
+          <li class="list-group-item">
+            <a href="https://github.com/{{ repo.owner.login }}/{{ repo.name }}">
+              {{ repo.name }}
+            </a>
+            <span class="glyphicon glyphicon-share"></span>
+          </li>
         {% endfor %}
       </ul>
     </div>
 
     <div class="col-sm-6 col-md-4">  
       <h2>Followers on Github</h2>
-      <ul>
+      <ul class="list-group">
         {% for follower in followers %}
-          <li><a href="{{ url_to('users') }}/{{ follower.login }}">{{ follower.login }}</a></li>
+          <li class="list-group-item">
+            <a href="{{ url_to('users') }}/{{ follower.login }}">
+              {{ follower.login }}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     </div>

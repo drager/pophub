@@ -88,5 +88,8 @@ h2 a {
   font-size: 1.5em;
 }
 
-
-
+.scrollable-menu {
+  height: auto;
+  max-height: 300px;
+  overflow-x: hidden;
+}

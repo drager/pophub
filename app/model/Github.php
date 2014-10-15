@@ -50,9 +50,9 @@ class Github {
 
     // var_dump($code);
 
-
     $request = new Request($url);
-    $response = $request->performRequest("POST", array("code" => $code));
+
+    $response = $request->post(array("code" => $code));
 
     $token = $response->getBody();
 
@@ -68,7 +68,8 @@ class Github {
     $url = "https://api.github.com/user?{$accessToken}&client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
 
     $request = new Request($url);
-    $response = $request->performRequest();
+
+    $response = $request->get();
 
     $body = json_decode($response->getBody());
 
@@ -105,7 +106,8 @@ class Github {
     // var_dump($url);
 
     $request = new Request($url);
-    $response = $request->performRequest();
+
+    $response = $request->get();
 
     // var_dump($response->getHeaders());
 
@@ -125,8 +127,10 @@ class Github {
 
   public function getSingleUser($username) {
     $url = "https://api.github.com/users/{$username}?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+
     $request = new Request($url);
-    $response = $request->performRequest(); 
+
+    $response = $request->get();
 
     // $this->rateLimitExceeded($response);
 
@@ -135,8 +139,10 @@ class Github {
 
   public function getUsersRepos($username) {
     $url = "https://api.github.com/users/" . $username . "/repos?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+
     $request = new Request($url);
-    $response = $request->performRequest();
+
+    $response = $request->get();
 
     // $this->rateLimitExceeded($response);
 
@@ -145,8 +151,10 @@ class Github {
 
   public function getUserFollowers($username) {
     $url = "https://api.github.com/users/" . $username . "/followers?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+
     $request = new Request($url);
-    $response = $request->performRequest();
+
+    $response = $request->get();
 
     // $this->rateLimitExceeded($response);
 
@@ -157,7 +165,8 @@ class Github {
     $url = "https://api.github.com/users/" . $username . "/events?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
 
     $request = new Request($url);
-    $response = $request->performRequest();
+
+    $response = $request->get();
 
     // $this->rateLimitExceeded($response);
 
