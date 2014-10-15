@@ -28,9 +28,101 @@
         </div>
       </div>
     </div>
-  
+
     <div class="col-sm-6 col-md-6">  
-      <h2>People you follow on PopHub</h2>
+      <h3>What have the one you follow been up to lately?</h3>
+      <ul class="list-group">
+        {% for eventuser in events %}
+          {% for event in eventuser %}
+            
+          
+          {% if event.type == "WatchEvent" %}
+            <li class="list-group-item">
+              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
+                {{ event.actor.login }}
+              </a>
+              starred
+              <a href="https://github.com/{{ event.repo.name }}">
+                {{ event.repo.name }}
+              </a>
+              <span class="glyphicon glyphicon-share"></span>
+              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+            </li>
+          {% elseif event.type == "PushEvent" %}
+            <li class="list-group-item">
+              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
+                {{ event.actor.login }}
+              </a>
+              pushed to {{ event.payload.ref }} at
+              <a href="https://github.com/{{ event.repo.name }}">
+                {{ event.repo.name }}
+              </a>
+              <span class="glyphicon glyphicon-share"></span>
+              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+            </li>
+          {% elseif event.type == "CreateEvent" %}
+            {% if event.payload.ref %}
+              <li class="list-group-item">
+                <a href="{{ url_to('users') }}/{{ event.actor.login }}">
+                  {{ event.actor.login }}
+                </a>
+                created branch {{ event.payload.ref }} at
+                <a href="https://github.com/{{ event.repo.name }}">
+                  {{ event.repo.name }}
+                </a>
+                <span class="glyphicon glyphicon-share"></span>
+                <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+              </li>  
+            {% else %}
+              <li class="list-group-item">
+                <a href="{{ url_to('users') }}/{{ event.actor.login }}">
+                  {{ event.actor.login }}
+                </a>
+                created repository
+                <a href="https://github.com/{{ event.repo.name }}">
+                  {{ event.repo.name }}
+                </a>
+                <span class="glyphicon glyphicon-share"></span>
+                <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+              </li>
+            {% endif %}
+          {% elseif event.type == "DeleteEvent" %}
+            <li class="list-group-item">
+              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
+                {{ event.actor.login }}
+              </a>
+              deleted branch {{ event.payload.ref }} at {{ event.repo.name }}
+              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+            </li>
+          {% elseif event.type == "ReleaseEvent" %}
+            <li class="list-group-item">
+              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
+                {{ event.actor.login }}
+              </a>
+              released 
+              <a href="{{ event.payload.release.html_url }}">
+                {{ event.payload.release.name }}
+              </a>
+              at {{ event.repo.name }}
+              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+            </li>
+          {% endif %}
+          {% endfor %}
+        {% else %}
+          <li class="list-group-item">You do not follow any users!</li>
+        {% endfor %}
+      </ul>
+    </div>
+  
+    <div class="col-sm-6 col-md-3">
+      <h3>People you follow</h3>
+      <ul class="list-group">
+        {% for follower in followers %}
+          <li class="list-group-item"><a href="{{ url_to('users') }}/{{ follower.user }}">{{ follower.user }}</a></li>
+        {% else %}
+          <li class="list-group-item">You do not follow any users!</li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
 {% endblock %}

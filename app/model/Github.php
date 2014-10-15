@@ -6,10 +6,9 @@ use Kagu\Http\Request;
 use Kagu\Http\Response;
 use Kagu\Config\Config;
 use Kagu\Exception\MissingCredentialsException;
+use Kagu\Exception\RateLimitExceededException;
 
 class Github {
-
-  private $debug;
 
   private $githubClientID;
 
@@ -21,7 +20,6 @@ class Github {
     $this->githubClientID = $githubClientID;
     $this->githubClientSecret = $githubClientSecret;
     $this->githubCallbackUrl = $githubCallbackUrl;
-    // $this->debug = $config->get("DEBUG");
 
     if ($this->githubClientID === null) {
       throw new \InvalidArgumentException("GITHUB_CLIENT_ID needs to be set!");
@@ -74,7 +72,9 @@ class Github {
 
     $body = json_decode($response->getBody());
 
-    var_dump($url);
+    // $this->rateLimitExceeded($response);
+
+    // var_dump($url);
 
     return $body;
   }
@@ -153,6 +153,17 @@ class Github {
     return json_decode($response->getBody());
   }
 
+  public function getUserActivity($username) {
+    $url = "https://api.github.com/users/" . $username . "/events?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+
+    $request = new Request($url);
+    $response = $request->performRequest();
+
+    // $this->rateLimitExceeded($response);
+
+    return json_decode($response->getBody()); 
+  }
+
   /**
    * @param Response $response 
    * @return Array
@@ -176,23 +187,21 @@ class Github {
    * @param Response $response 
    * @throws RateLimitExceededException
    */
-  // private function rateLimitExceeded(Response $response) {
-  //   $numberOfCalls = $response->getHeader("X-RateLimit-Limit");
-  //   $remainingCalls = $response->getHeader("X-RateLimit-Remaining");
+  private function rateLimitExceeded(Response $response) {
+    $numberOfCalls = $response->getHeader("X-RateLimit-Limit");
+    $remainingCalls = $response->getHeader("X-RateLimit-Remaining");
 
-  //   if ($this->debug === true) {
-  //     $timeRemaining = $response->getHeader("X-RateLimit-Reset");
-  //     $date = new \DateTime();
-  //     $date->setTimestamp($timeRemaining);
-  //     print("<pre>Number of calls: " . $numberOfCalls . "</pre>");
-  //     print("<pre>Number of calls left: " . $remainingCalls . "</pre>");
-  //     print("<pre>New set of calls available at: " . $date->format('Y-m-d H:i:s') . "</pre>");
-  //   }
+    $timeRemaining = $response->getHeader("X-RateLimit-Reset");
+    $date = new \DateTime();
+    $date->setTimestamp($timeRemaining);
+    print("<pre>Number of calls: " . $numberOfCalls . "</pre>");
+    print("<pre>Number of calls left: " . $remainingCalls . "</pre>");
+    print("<pre>New set of calls available at: " . $date->format('Y-m-d H:i:s') . "</pre>");
 
-  //   if ($numberOfCalls !== null && $remainingCalls !== null
-  //     && $remainingCalls == 0) {
-  //     throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
-  //   }
-  // }
+    if ($numberOfCalls !== null && $remainingCalls !== null
+      && $remainingCalls == 0) {
+      throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
+    }
+  }
 
 }

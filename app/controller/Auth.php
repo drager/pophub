@@ -21,6 +21,7 @@ class Auth extends BaseController {
   function __construct() {
     $config = new Config(__DIR__."/../config/app.php");
     $this->model = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));
+    $this->followers = new Model\Followers($config);
   }
 
   public function index() {
@@ -50,11 +51,25 @@ class Auth extends BaseController {
 
     $auth = Session::get("access_token");
 
-    // var_dump($_SESSION);
+    $followers = $this->followers->getFollowers($user->login);
+
+    $events = null;
+
+    if ($followers !== null) {
+      foreach ($followers as $follower) {
+        $events[] = $this->model->getUserActivity($follower["user"]);
+      }
+    }
+
+    // var_dump($events[0]);
+
+    // var_dump($events[13]->payload);
 
     echo $this->render('logged_in.html', array(
       "user" => $user,
-      "authenticated" => $auth
+      "authenticated" => $auth,
+      "followers" => $followers,
+      "events" => $events
     ));
   }
 }
