@@ -141,21 +141,23 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
   /**
   * @expectedException        Exception
-  * @expectedExceptionMessage Code invalid!
   */
   public function testUserCanNOTGetAuthenticatedWithInvalidToken() {
 
-    // GITHUB_CLIENT_ID AND GITHUB_CALLBACK_URL is not found since it is
-    // in env vars....
+    // GITHUB_CLIENT_ID is not found since it is in env vars
+    // and therefore we will get the exception "Page not found"
+    // instead. Real exception would be "Code invalid!".
 
-    // $auth = $this->github->authorize();
+    $auth = $this->github->authorize();
 
-    // $url = "https://github.com/login/oauth/authorize?client_id="
-    //   . $this->config->get("GITHUB_CLIENT_ID")  . "&redirect_uri=" . $this->config->get("GITHUB_CALLBACK_URL");
+    $url = "https://github.com/login/oauth/authorize?client_id="
+      . $this->config->get("GITHUB_CLIENT_ID")  . "&redirect_uri=" . $this->config->get("GITHUB_CALLBACK_URL");
 
-    // $this->assertEquals($auth, $url);
+    $this->assertEquals($auth, $url);
 
     $token = $this->github->postAccessToken("some_token");
+
+
   }
 
 }
