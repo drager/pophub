@@ -15,7 +15,7 @@ class Config {
    * @param String $fileName
    */
   public function __construct($fileName) {
-    
+
     if (file_exists($fileName) === false) {
       throw new \InvalidArgumentException("The file name: {$fileName} does not exist");
     }

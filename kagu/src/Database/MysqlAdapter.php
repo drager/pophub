@@ -11,7 +11,7 @@ class MysqlAdapter implements DatabaseAdapterInterface {
   protected $dbConnection;
 
   /**
-   * @param Config $config 
+   * @param Config $config
    * @return void
    */
   public function __construct(Config $config) {
@@ -28,9 +28,9 @@ class MysqlAdapter implements DatabaseAdapterInterface {
       $this->dbConnection = new \PDO($this->config->get("DB_CONNECTION"), $this->config->get("DB_USER"),
         $this->config->get("DB_PASSWORD"));
     }
-    
+
     $this->dbConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    
+
     return $this->dbConnection;
   }
 

@@ -20,7 +20,7 @@ class MissingCredentialsException extends \Exception {
 
 /**
  * Exception for the Github rate limit exceeded
- */ 
+ */
 class RateLimitExceededException extends \Exception {
   public function __construct($message, $code = 0, \Exception $previous = null) {
     parent::__construct($message, $code, $previous);
@@ -29,7 +29,7 @@ class RateLimitExceededException extends \Exception {
 
 /**
  * Exception when a response returns http status 404
- */ 
+ */
 class HttpStatus404Exception extends \Exception {
   public function __construct($message, $code = 0, \Exception $previous = null) {
     parent::__construct($message, $code, $previous);

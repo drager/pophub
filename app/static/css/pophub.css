@@ -93,3 +93,12 @@ h2 a {
   max-height: 300px;
   overflow-x: hidden;
 }
+
+.list-group {
+  margin-top: 2em;
+}
+
+.list-group-item h3 {
+  margin: 0;
+  padding: 0;
+}

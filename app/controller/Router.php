@@ -91,7 +91,7 @@ class Router {
       else {
         $controller = new Error();
         $controller->serverError();
-        error_log($err_msg, 3, $this->config->get("ERROR_LOG")); 
+        error_log($err_msg, 3, $this->config->get("ERROR_LOG"));
       }
     });
 

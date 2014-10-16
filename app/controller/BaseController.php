@@ -7,7 +7,7 @@ use Twig_Environment;
 use Kagu\Controller\Controller;
 
 class BaseController extends Controller {
-  
+
   protected function setup() {
     $this->setTemplatePath(__DIR__."/../view/");
 

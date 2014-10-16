@@ -17,7 +17,7 @@ class Auth extends BaseController {
    * @var Usermodel
    */
   private $model;
-  
+
   function __construct() {
     $config = new Config(__DIR__."/../config/app.php");
     $this->model = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));

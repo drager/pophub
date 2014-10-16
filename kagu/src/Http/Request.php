@@ -19,7 +19,7 @@ class Request implements HttpRequestAdapterInterface {
 
   /**
    * Standard HTTP methods.
-   */ 
+   */
   const METHOD_GET     = "GET";
   const METHOD_POST    = "POST";
   const METHOD_PUT     = "PUT";
@@ -63,7 +63,7 @@ class Request implements HttpRequestAdapterInterface {
           "user_agent"       => self::NAME . self::VERSION,
           "ignore_errors"    => $ignore_errors,
           "follow_location"  => $follow_location,
-          "content"          => $data    
+          "content"          => $data
         )
       );
     }
@@ -79,7 +79,7 @@ class Request implements HttpRequestAdapterInterface {
   }
 
   /**
-   * @param Array $options 
+   * @param Array $options
    * @return Streaming object
    */
   private function createStream($options = array()) {

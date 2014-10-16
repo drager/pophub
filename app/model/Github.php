@@ -170,11 +170,11 @@ class Github {
 
     // $this->rateLimitExceeded($response);
 
-    return json_decode($response->getBody()); 
+    return json_decode($response->getBody());
   }
 
   /**
-   * @param Response $response 
+   * @param Response $response
    * @return Array
    */
   private function getPaging(Response $response) {
@@ -193,7 +193,7 @@ class Github {
   }
 
   /**
-   * @param Response $response 
+   * @param Response $response
    * @throws RateLimitExceededException
    */
   private function rateLimitExceeded(Response $response) {

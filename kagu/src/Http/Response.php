@@ -44,7 +44,7 @@ class Response {
     }
 
     if ($status === self::STATUS_500) {
-      throw new \Exception("Something unexpected happend."); 
+      throw new \Exception("Something unexpected happend.");
     }
   }
 
@@ -89,7 +89,7 @@ class Response {
    * Takes the response headers and parses them so we later on
    * can get them specified by String key name rather than by
    * numeric index. Instead ["SERVER"] rather than [1].
-   * @param Array $headers 
+   * @param Array $headers
    * @return Array
    */
   private function parseHeaders(array $headers) {

@@ -56,7 +56,7 @@
   {% else %}
     <a href="{{ url_to('users') }}?sort_by=repos" class="btn btn-primary" role="button">Sort by repos</a>
   {% endif %}
-  
+
 
   <div class="btn-group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -77,7 +77,7 @@
 
   <div class="row">
     {% for user in users.items %}
-          
+
     <div class="col-xs-6 col-md-2">
       <div class="thumbnail">
         <img src="{{ user.avatar_url }}&amp;s=128" height="128" width="155" />
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-  
+
     {% endfor %}
   </div>
 

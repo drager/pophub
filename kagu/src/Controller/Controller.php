@@ -7,7 +7,7 @@ use Twig_Environment;
 use Twig_SimpleFunction;
 
 abstract class Controller {
-  
+
   protected $engine;
 
   protected $template;
@@ -20,8 +20,8 @@ abstract class Controller {
   protected abstract function setup();
 
   /**
-   * @param String $template 
-   * @param Array $data 
+   * @param String $template
+   * @param Array $data
    * @return type
    */
   protected function render($template, array $data = null) {

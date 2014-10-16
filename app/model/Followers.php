@@ -12,7 +12,7 @@ class Followers extends MysqlAdapter {
   private $user = "user";
 
   /**
-   * @param Config $config 
+   * @param Config $config
    * @return void
    */
   public function __construct(Config $config) {
@@ -20,7 +20,7 @@ class Followers extends MysqlAdapter {
   }
 
   /**
-   * @param String $user 
+   * @param String $user
    * @return Array
    */
   public function getFollowers($user) {

@@ -19,7 +19,7 @@ class Users extends BaseController {
    * @var Usermodel
    */
   private $model;
-  
+
   /**
    * Constructor
    */
