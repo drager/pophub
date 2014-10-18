@@ -9,7 +9,7 @@ use PopHub\Model;
 use PopHub\Model\Session;
 use PopHub\View;
 
-class Users extends BaseController {
+class Users {
   /**
    * @var Userview
    */
@@ -54,53 +54,19 @@ class Users extends BaseController {
       return $this->errorView->showPageNotFound("/users/?page=" . $page);
     }
 
-    $pages = $users["pages"];
-
-    if (isset($pages["first"])) {
-      $pages["first"] = preg_replace('/^.*page=\s*/', '', $pages["first"]);
-    }
-
-    if (isset($pages["prev"])) {
-      $pages["prev"] = preg_replace('/^.*page=\s*/', '', $pages["prev"]);
-    }
-    if (isset($pages["next"])) {
-      $pages["next"] = preg_replace('/^.*page=\s*/', '', $pages["next"]);
-    }
-    if (isset($pages["last"])) {
-      $pages["last"] = preg_replace('/^.*page=\s*/', '', $pages["last"]);
-    }
-
-    $numOfPages = isset($pages["last"]) ? $pages["last"] : $pages["prev"] + 1;
-
-    if ($page > $numOfPages) {
-      return $this->errorView->showPageNotFound("/users/?page=" . $page);
-    }
-
-    var_dump($numOfPages);
-
     // RESPONSE FEL FRÅN GITHUB?
 
     // ^GITHUB SKICKAR BARA UT 1000 RESULTAT…
 
-    var_dump($users["body"]->total_count);
-
-    // var_dump($numOfPages);
-
-    $sort = null;
-
-    if (isset($_GET["sort_by"])) {
-      $sort = $_GET["sort_by"];
-    }
-
     $auth = Session::get("access_token");
 
-    echo $this->render('users.html', array(
+    $context = array(
       "users" => $users["body"],
-      "pages" => $pages,
-      "num_of_pages" => $numOfPages,
-      "sort" => $sort,
+      "pages" => $users["pages"],
       "authenticated" => $auth
-    ));
+    );
+
+    return $this->view->showAllUsers($context);
   }
 
   /**
@@ -119,11 +85,13 @@ class Users extends BaseController {
 
     $auth = Session::get("access_token");
 
-    echo $this->render('show_user.html', array(
+    $context = array(
       "user" => $userData,
       "repos" => $repos,
       "followers" => $followers,
       "authenticated" => $auth
-    ));
+    );
+
+    return $this->view->showSingleUser($context);
   }
 }

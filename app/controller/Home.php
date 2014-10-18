@@ -6,18 +6,22 @@ use PopHub\View;
 use PopHub\Model\Session;
 
 
-class Home extends BaseController {
+class Home {
   private $view;
 
   function __construct() {
     $this->view = new View\Home();
   }
 
+  /**
+   * Index action, the home page.
+   * @return The showHome view
+   */
   public function index() {
     $auth = Session::get("access_token");
 
-    echo $this->render('home.html', array(
-      "authenticated" => $auth
-    ));
+    $context = array("authenticated" => $auth);
+
+    return $this->view->showHome($context);
   }
 }

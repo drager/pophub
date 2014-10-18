@@ -6,8 +6,9 @@ use Kagu\Config\Config;
 
 use PopHub\Model;
 use PopHub\Model\Session;
+use PopHub\View;
 
-class Auth extends BaseController {
+class Auth {
   /**
    * @var Userview
    */
@@ -22,6 +23,8 @@ class Auth extends BaseController {
     $config = new Config(__DIR__."/../config/app.php");
     $this->model = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));
     $this->followers = new Model\Followers($config);
+
+    $this->view = new View\Auth();
   }
 
   public function index() {
@@ -61,15 +64,17 @@ class Auth extends BaseController {
       }
     }
 
+    $context = array(
+      "followers" => $followers,
+      "user" => $user,
+      "events" => $events,
+      "authenticated" => $auth
+    );
+
     // var_dump($events[0]);
 
     // var_dump($events[13]->payload);
 
-    echo $this->render('logged_in.html', array(
-      "user" => $user,
-      "authenticated" => $auth,
-      "followers" => $followers,
-      "events" => $events
-    ));
+    return $this->view->showLoggedIn($context);
   }
 }

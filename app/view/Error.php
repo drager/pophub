@@ -2,14 +2,22 @@
 
 namespace PopHub\View;
 
-class Error {
-  public function showServerError() {
-    echo "<h1>500</h1>";
+class Error extends BaseView {
 
-    echo "<p>Något gick fel!</p>";
+  /**
+   * Shows the 500 error page.
+   * @return void
+   */
+  public function showServerError() {
+    echo $this->render("500.html");
   }
 
+  /**
+   * Shows the 404 not found page.
+   * @param String $page
+   * @return void
+   */
   public function showPageNotFound($page) {
-    echo "Oops, de ser ut som om $page inte riktigt finns...\n";
+    echo $this->render("404.html", array("page" => $page));
   }
 }

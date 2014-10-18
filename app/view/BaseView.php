@@ -1,15 +1,15 @@
 <?php
 
-namespace PopHub\Controller;
+namespace PopHub\View;
 
 use Twig_Loader_Filesystem;
 use Twig_Environment;
-use Kagu\Controller\Controller;
+use Kagu\View\View;
 
-class BaseController extends Controller {
+class BaseView extends View {
 
   protected function setup() {
-    $this->setTemplatePath(__DIR__."/../view/");
+    $this->setTemplatePath(__DIR__."/../templates/");
 
     $loader = new Twig_Loader_Filesystem($this->template);
 

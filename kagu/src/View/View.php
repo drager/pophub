@@ -1,12 +1,12 @@
 <?php
 
-namespace Kagu\Controller;
+namespace Kagu\View;
 
 use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Twig_SimpleFunction;
 
-abstract class Controller {
+abstract class View {
 
   protected $engine;
 
