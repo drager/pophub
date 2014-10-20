@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="text-center">
+      <ul class="pagination">
+        {% if pages.first %}
+          {% if sort %}
+            <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.first }}">First page</a></li>
+          {% else %}
+            <li><a href="{{ url_to('users') }}?page={{ pages.first }}">First page</a></li>
+          {% endif %}
+        {% endif %}
+
+        {% if pages.prev %}
+          {% if sort %}
+            <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.prev }}">&laquo;</a></li>
+          {% else %}
+            <li><a href="{{ url_to('users') }}?page={{ pages.prev }}">&laquo;</a></li>
+          {% endif %}
+        {% endif %}
+
+        {% if pages.numpages > 1 %}
+          {% for i in 1..pages.numpages %}
+            {% if sort %}
+              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
+            {% else %}
+              <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% if pages.next %}
+          {% if sort %}
+            <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.next }}">&raquo;</a></li>
+          {% else %}
+            <li><a href="{{ url_to('users') }}?page={{ pages.next }}">&raquo;</a></li>
+          {% endif %}
+        {% endif %}
+
+        {% if pages.last %}
+          {% if sort %}
+            <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.last }}">Last page</a></li>
+          {% else %}
+            <li><a href="{{ url_to('users') }}?page={{ pages.last }}">Last page</a></li>
+          {% endif %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>

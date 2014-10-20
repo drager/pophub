@@ -3,62 +3,13 @@
 {% block title %}Users - {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12">
-      <div class="text-center">
-        <ul class="pagination">
-          {% if pages.first %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.first }}">First page</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.first }}">First page</a></li>
-            {% endif %}
-          {% endif %}
-
-          {% if pages.prev %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.prev }}">&laquo;</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.prev }}">&laquo;</a></li>
-            {% endif %}
-          {% endif %}
-
-          {% if pages.numpages > 1 %}
-            {% for i in 1..pages.numpages %}
-              {% if sort %}
-                <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
-              {% else %}
-                <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-
-          {% if pages.next %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.next }}">&raquo;</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.next }}">&raquo;</a></li>
-            {% endif %}
-          {% endif %}
-
-          {% if pages.last %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.last }}">Last page</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.last }}">Last page</a></li>
-            {% endif %}
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </div>
+  {% include "includes/pagination.html" %}
 
   {% if sort %}
     <a href="{{ url_to('users') }}" class="btn btn-primary" role="button">Sort by followers (default)</a>
   {% else %}
     <a href="{{ url_to('users') }}?sort_by=repos" class="btn btn-primary" role="button">Sort by repos</a>
   {% endif %}
-
 
   <div class="btn-group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -79,75 +30,25 @@
 
   <div class="row">
     {% for user in users %}
-
-    <div class="col-xs-6 col-md-2">
-      <div class="thumbnail">
-        <img src="{{ user.avatar }}&amp;s=128" height="128" width="155" />
-        <div class="caption">
-          <h2><a href="{{ url_to('users') }}/{{ user.login }}">{{ user.login }}</a></h2>
-          {{ user.followers }}
-          {{ user.public_repos }}
-          {% if authenticated %}
-            <p>
-              <a href="{{ url_to('users') }}" class="btn btn-primary" role="button">
-                <span class="glyphicon glyphicon-user"></span>
-                Follow</a>
-            </p>
-          {% endif %}
+      <div class="col-xs-6 col-md-2">
+        <div class="thumbnail">
+          <img src="{{ user.avatar }}&amp;s=128" height="128" width="155" />
+          <div class="caption">
+            <h2><a href="{{ url_to('users') }}/{{ user.login }}">{{ user.login }}</a></h2>
+            {{ user.followers }}
+            {{ user.public_repos }}
+            {% if authenticated %}
+              <p>
+                <a href="{{ url_to('users') }}" class="btn btn-primary" role="button">
+                  <span class="glyphicon glyphicon-user"></span>
+                  Follow</a>
+              </p>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-
     {% endfor %}
   </div>
 
-    <div class="row">
-    <div class="col-md-12">
-      <div class="text-center">
-        <ul class="pagination">
-          {% if pages.first %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.first }}">First page</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.first }}">First page</a></li>
-            {% endif %}
-          {% endif %}
-
-          {% if pages.prev %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.prev }}">&laquo;</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.prev }}">&laquo;</a></li>
-            {% endif %}
-          {% endif %}
-
-          {% if pages.numpages > 1 %}
-            {% for i in 1..pages.numpages %}
-              {% if sort %}
-                <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
-              {% else %}
-                <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-
-          {% if pages.next %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.next }}">&raquo;</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.next }}">&raquo;</a></li>
-            {% endif %}
-          {% endif %}
-
-          {% if pages.last %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ pages.last }}">Last page</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ pages.last }}">Last page</a></li>
-            {% endif %}
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </div>
+  {% include "includes/pagination.html" %}
 {% endblock %}
