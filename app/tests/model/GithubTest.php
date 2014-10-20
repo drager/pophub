@@ -11,11 +11,6 @@ use Kagu\Exception\MissingCredentialsException;
 
 use PopHub\Model;
 
-
-
-// var_dump(__DIR__.'/../../bootstrap/start.php');
-
-
 class GithubTest extends \PHPUnit_Framework_TestCase {
 
   private $github;
@@ -144,8 +139,16 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals($auth, $url);
 
     $token = $this->github->postAccessToken("some_token");
+  }
 
+  public function testCanGetAUsersActivity() {
+    $user = "jh222xk";
 
+    $expectedArray = array("login" => "jh222xk");
+
+    $events = $this->github->getUserActivity($user);
+
+    $this->assertEquals($expectedArray["login"], $events[0]->getUser()->getLogin());
   }
 
 }
