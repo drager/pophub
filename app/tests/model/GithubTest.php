@@ -22,43 +22,20 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
   public function setUp() {
     $this->config = new Config\Config(__DIR__."/../../config/app.php");
-    $this->github = new Model\Github($this->config->get("GITHUB_CLIENT_ID"), $this->config->get("GITHUB_CLIENT_SECRET"), $this->config->get("GITHUB_CALLBACK_URL"));
+    $this->github = new Model\GithubAdapter(new Model\Github($this->config));
   }
 
   public function tearDown() {
     $this->github = null;
-  }
-
-
-  /**
-  * @expectedException        InvalidArgumentException
-  * @expectedExceptionMessage GITHUB_CLIENT_ID needs to be set!
-  */
-  public function testConstructorCallsInternalMethods() {
-    $github = new Model\Github(null, null, null);
-  }
-
-  /**
-  * @expectedException        InvalidArgumentException
-  * @expectedExceptionMessage GITHUB_CLIENT_SECRET needs to be set!
-  */
-  public function testConstructorWithoutClientSecret() {
-    $github = new Model\Github("SOME_CLIENT_ID", null, null);
-  }
-
-  /**
-  * @expectedException        InvalidArgumentException
-  * @expectedExceptionMessage GITHUB_CALLBACK_URL needs to be set!
-  */
-  public function testConstructorWithoutCallbackURL() {
-    $github = new Model\Github("SOME_CLIENT_ID", "WONDERFUL_SECRET", null);
-    // WONDERFUL_SECRET
+    $this->config = null;
   }
 
   public function testCanGetAllUsersWithoutSorting() {
     $expectedArray = array("login" => "torvalds");
 
-    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers()["body"]->items[0]->login);
+    $users = $this->github->getAllUsers(null, "followers");
+
+    $this->assertEquals($expectedArray["login"], $users["users"][0]->getLogin());
   }
 
   public function testCanGetAllUsersSortingByRepos() {
@@ -66,15 +43,26 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $expectedArray = array("login" => "visionmedia");
 
-    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers(null, $sortBy)["body"]->items[0]->login);
+    $users = $this->github->getAllUsers(null, $sortBy);
+
+    $this->assertEquals($expectedArray["login"], $users["users"][0]->getLogin());
   }
 
   public function testCanGetAllUsersWithPagingButWithoutSorting() {
     $page = "2";
 
-    $expectedArray = array("login" => "miyagawa");
+    $expectedArray = array("login" => "chenshuo");
 
-    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers($page)["body"]->items[0]->login);
+    $users = $this->github->getAllUsers($page, "followers");
+
+    $hasFound = false;
+    foreach($users["users"] as $user) {
+      if ($expectedArray["login"] == $user->getLogin()) {
+        $hasFound = true;
+      }
+    }
+
+    $this->assertTrue($hasFound);
   }
 
   public function testCanGetAllUsersWithPagingAndSorting() {
@@ -82,13 +70,13 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $sortBy = "repos";
 
-    $users = $this->github->getAllUsers($page, $sortBy)["body"]->items;
+    $users = $this->github->getAllUsers($page, $sortBy);
 
     $expectedArray = array("login" => "boostbob");
 
     $hasFound = false;
-    foreach($users as $user) {
-      if ($expectedArray["login"] == $user->login) {
+    foreach($users["users"] as $user) {
+      if ($expectedArray["login"] == $user->getLogin()) {
         $hasFound = true;
       }
     }
@@ -101,9 +89,9 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $expectedArray = array("login" => "jh222xk", "another_login" => "jh22213");
 
-    $this->assertEquals($expectedArray["login"], $this->github->getSingleUser($username)->login);
+    $this->assertEquals($expectedArray["login"], $this->github->getSingleUser($username)->getLogin());
 
-    $this->assertNotEquals($expectedArray["another_login"], $this->github->getSingleUser($username)->login);
+    $this->assertNotEquals($expectedArray["another_login"], $this->github->getSingleUser($username)->getLogin());
   }
 
   public function testCanGetUserRepos() {
@@ -111,11 +99,11 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $expectedRepoArray = array("name" => "pophub");
 
-    $repos = $this->github->getUsersRepos($username);
+    $repos = $this->github->getUserRepos($username);
 
     $hasFound = false;
     foreach($repos as $repo) {
-      if ($expectedRepoArray["name"] == $repo->name) {
+      if ($expectedRepoArray["name"] == $repo->getName()) {
         $hasFound = true;
       }
     }
@@ -126,7 +114,7 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
   public function testCanGetAllUsersWithLanguageSorting() {
     $expectedArray = array("login" => "JeffreyWay");
 
-    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers(null, null, "php")["body"]->items[1]->login);
+    $this->assertEquals($expectedArray["login"], $this->github->getAllUsers(null, null, "php")["users"][1]->getLogin());
   }
 
   public function testCanGetUserFollowers() {
@@ -136,7 +124,7 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $followers = $this->github->getUserFollowers($username);
 
-    $this->assertEquals($expectedArray["login"], $followers[0]->login);
+    $this->assertEquals($expectedArray["login"], $followers[0]->getUser()->getLogin());
   }
 
   /**

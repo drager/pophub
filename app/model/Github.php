@@ -5,38 +5,22 @@ namespace PopHub\Model;
 use Kagu\Http\Request;
 use Kagu\Http\Response;
 use Kagu\Config\Config;
-use Kagu\Exception\MissingCredentialsException;
-use Kagu\Exception\RateLimitExceededException;
 
 class Github {
 
-  private $githubClientID;
+  private $baseUrl = "https://api.github.com";
 
-  private $githubClientSecret;
+  private $oauthUrl = "https://github.com/login/oauth/authorize";
 
-  private $githubCallbackUrl;
+  private $config;
 
-  public function __construct($githubClientID, $githubClientSecret, $githubCallbackUrl) {
-    $this->githubClientID = $githubClientID;
-    $this->githubClientSecret = $githubClientSecret;
-    $this->githubCallbackUrl = $githubCallbackUrl;
-
-    if ($this->githubClientID === null) {
-      throw new \InvalidArgumentException("GITHUB_CLIENT_ID needs to be set!");
-    }
-
-    if ($this->githubClientSecret === null) {
-      throw new \InvalidArgumentException("GITHUB_CLIENT_SECRET needs to be set!");
-    }
-
-    if ($this->githubCallbackUrl === null) {
-      throw new \InvalidArgumentException("GITHUB_CALLBACK_URL needs to be set!");
-    }
+  public function __construct(Config $config) {
+    $this->config = $config;
   }
 
   public function authorize() {
-    $url = "https://github.com/login/oauth/authorize?client_id="
-      . $this->githubClientID  . "&redirect_uri=" . $this->githubCallbackUrl;
+    $url = $this->oauthUrl . "?client_id=" . $this->config->get("GITHUB_CLIENT_ID")  .
+      "&redirect_uri=" . $this->config->get("GITHUB_CALLBACK_URL");
 
     $request = new Request($url);
 
@@ -44,11 +28,8 @@ class Github {
   }
 
   public function postAccessToken($code) {
-    $url = "https://github.com/login/oauth/access_token?client_id="
-      . $this->githubClientID  . "&client_secret=" . $this->githubClientSecret
-      . "&code=" . $code;
-
-    // var_dump($code);
+    $url = "https://github.com/login/oauth/access_token?client_id=" . $this->config->get("GITHUB_CLIENT_ID")  .
+      "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET") . "&code=" . rawurldecode($code);
 
     $request = new Request($url);
 
@@ -65,17 +46,14 @@ class Github {
   }
 
   public function getLoggedInUser($accessToken) {
-    $url = "https://api.github.com/user?{$accessToken}&client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+    $url = $this->baseUrl . "/user?" . $accessToken ."&client_id="
+      . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
 
     $request = new Request($url);
 
     $response = $request->get();
 
     $body = json_decode($response->getBody());
-
-    // $this->rateLimitExceeded($response);
-
-    // var_dump($url);
 
     return $body;
   }
@@ -84,40 +62,33 @@ class Github {
     # TODO: Better urls…
     #https://api.github.com/search/users?q=language:php&followers:%3E=312
     if ($language !== null) {
-      $url = "https://api.github.com/search/users?q=language";
-      $url .= urlencode(":".$language);
+      $url = $this->baseUrl . "/search/users?q=language";
+      $url .= rawurldecode(":".$language);
       $url .= "&{$sortBy}";
     } else {
-      $url = "https://api.github.com/search/users?q={$sortBy}";
+      $url = $this->baseUrl . "/search/users?q={$sortBy}";
     }
 
     if ($sortBy === "repos") {
-      $url .= urlencode(":>=228");
+      $url .= rawurldecode(":>=228");
     } else {
-      $url .= urlencode(":>=312");
+      $url .= rawurldecode(":>=312");
     }
 
-    $url .= "&order=asc&client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+    $url .= "&order=asc&client_id=" . $this->config->get("GITHUB_CLIENT_ID") .
+      "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
     $url .= "&per_page=100";
     if ($page) {
       $url .= "&page=" . $page;
     }
 
-    // var_dump($url);
-
     $request = new Request($url);
 
     $response = $request->get();
 
-    // var_dump($response->getHeaders());
-
     $pages = $this->getPaging($response);
 
     $body = json_decode($response->getBody());
-
-    // var_dump($body);
-
-    // $this->rateLimitExceeded($response);
 
     return array(
       "body" => $body,
@@ -126,7 +97,8 @@ class Github {
   }
 
   public function getSingleUser($username) {
-    $url = "https://api.github.com/users/{$username}?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+    $url = $this->baseUrl . "/users/" . $username . "?client_id="
+      . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
 
     $request = new Request($url);
 
@@ -137,8 +109,9 @@ class Github {
     return json_decode($response->getBody());
   }
 
-  public function getUsersRepos($username) {
-    $url = "https://api.github.com/users/" . $username . "/repos?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+  public function getUserRepos($username) {
+    $url = $this->baseUrl . "/users/" . $username . "/repos?client_id="
+      . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
 
     $request = new Request($url);
 
@@ -150,7 +123,8 @@ class Github {
   }
 
   public function getUserFollowers($username) {
-    $url = "https://api.github.com/users/" . $username . "/followers?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+    $url = $this->baseUrl . "/users/" . $username . "/followers?client_id="
+      . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
 
     $request = new Request($url);
 
@@ -162,7 +136,8 @@ class Github {
   }
 
   public function getUserActivity($username) {
-    $url = "https://api.github.com/users/" . $username . "/events?client_id={$this->githubClientID}&client_secret={$this->githubClientSecret}";
+    $url = $this->baseUrl . "/users/" . $username . "/events?client_id="
+      . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
 
     $request = new Request($url);
 
@@ -179,6 +154,10 @@ class Github {
    */
   private function getPaging(Response $response) {
     $links = $response->getHeader("Link");
+
+    if ($links === null) {
+      return;
+    }
 
     $pagination = array();
     $links = explode(",", $links);
@@ -212,5 +191,4 @@ class Github {
       throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
     }
   }
-
 }

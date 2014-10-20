@@ -61,6 +61,10 @@ class Response {
    * @return String
    */
   public function getHeader($key) {
+    if (isset($this->headers[$key]) === false) {
+      return null;
+    }
+
     return $this->headers[$key];
   }
 

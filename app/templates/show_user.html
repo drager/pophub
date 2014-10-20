@@ -7,7 +7,7 @@
     <div class="col-sm-6 col-md-3">
 
       <div class="thumbnail">
-        <img src='{{ user.avatar_url }}&amp;s=250' height='250' />
+        <img src='{{ user.avatar }}&amp;s=250' height='250' />
         <div class="caption">
           <h2>{{ user.login }}</h2>
           <h3>{{ user.name }}</h3>
@@ -23,7 +23,7 @@
             {% if user.location %}
               <li><span class="glyphicon glyphicon-map-marker"></span>{{ user.location }}</li>
             {% endif %}
-            <li><span class="glyphicon glyphicon-time"></span>{{ user.created_at|date("F j, Y") }}</li>
+            <li><span class="glyphicon glyphicon-time"></span>{{ user.joined|date("F j, Y") }}</li>
           </ul>
         </div>
       </div>
@@ -48,8 +48,8 @@
         <li class="list-group-item"><h3>Followers on Github</h3></li>
         {% for follower in followers %}
           <li class="list-group-item">
-            <a href="{{ url_to('users') }}/{{ follower.login }}">
-              {{ follower.login }}
+            <a href="{{ url_to('users') }}/{{ follower.user.login }}">
+              {{ follower.user.login }}
             </a>
           </li>
         {% endfor %}

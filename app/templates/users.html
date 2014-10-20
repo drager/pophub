@@ -23,13 +23,15 @@
             {% endif %}
           {% endif %}
 
-          {% for i in 1..pages.num_of_pages %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-          {% endfor %}
+          {% if pages.numpages > 1 %}
+            {% for i in 1..pages.numpages %}
+              {% if sort %}
+                <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
+              {% else %}
+                <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
 
           {% if pages.next %}
             {% if sort %}
@@ -76,11 +78,11 @@
   </div>
 
   <div class="row">
-    {% for user in users.items %}
+    {% for user in users %}
 
     <div class="col-xs-6 col-md-2">
       <div class="thumbnail">
-        <img src="{{ user.avatar_url }}&amp;s=128" height="128" width="155" />
+        <img src="{{ user.avatar }}&amp;s=128" height="128" width="155" />
         <div class="caption">
           <h2><a href="{{ url_to('users') }}/{{ user.login }}">{{ user.login }}</a></h2>
           {{ user.followers }}
@@ -119,13 +121,15 @@
             {% endif %}
           {% endif %}
 
-          {% for i in 1..pages.num_of_pages %}
-            {% if sort %}
-              <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
-            {% else %}
-              <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-          {% endfor %}
+          {% if pages.numpages > 1 %}
+            {% for i in 1..pages.numpages %}
+              {% if sort %}
+                <li><a href="{{ url_to('users') }}?sort_by={{ sort }}&amp;page={{ i }}">{{ i }}</a></li>
+              {% else %}
+                <li><a href="{{ url_to('users') }}?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
 
           {% if pages.next %}
             {% if sort %}

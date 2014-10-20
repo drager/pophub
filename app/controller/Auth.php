@@ -19,22 +19,32 @@ class Auth {
    */
   private $model;
 
+  /**
+   * @return void
+   */
   function __construct() {
     $config = new Config(__DIR__."/../config/app.php");
-    $this->model = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));
+
+    $this->model = new Model\GithubAdapter(new Model\Github($config));
     $this->followers = new Model\Followers($config);
 
     $this->view = new View\Auth();
   }
 
+  /**
+   * The index action, tries to authorize an user.
+   * @return String
+   */
   public function index() {
-    $auth = $this->model->authorize();
-
-    // var_dump($auth);
-
-    return $auth;
+    return $this->model->authorize();
   }
 
+  /**
+   * Get's a token via the given $code and sets a session
+   * if the $code is valid.
+   * @param String $code
+   * @return String
+   */
   public function getToken($code) {
     try {
       $token = $this->model->postAccessToken($code);
@@ -44,17 +54,21 @@ class Auth {
 
     Session::set("access_token", $token);
 
-    // var_dump($token);
-
     return $token;
   }
 
+  /**
+   * Logged in action, get's the session, current user,
+   * those the user follow and activity
+   * @param String $accessToken
+   * @return View showLoggedIn
+   */
   public function loggedInUser($accessToken) {
     $user = $this->model->getLoggedInUser($accessToken);
 
     $auth = Session::get("access_token");
 
-    $followers = $this->followers->getFollowers($user->login);
+    $followers = $this->followers->getFollowers($user->getLogin());
 
     $events = null;
 
@@ -70,10 +84,6 @@ class Auth {
       "events" => $events,
       "authenticated" => $auth
     );
-
-    // var_dump($events[0]);
-
-    // var_dump($events[13]->payload);
 
     return $this->view->showLoggedIn($context);
   }

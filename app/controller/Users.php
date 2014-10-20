@@ -25,7 +25,7 @@ class Users {
    */
   function __construct() {
     $config = new Config(__DIR__."/../config/app.php");
-    $this->model = new Model\Github($config->get("GITHUB_CLIENT_ID"), $config->get("GITHUB_CLIENT_SECRET"), $config->get("GITHUB_CALLBACK_URL"));
+    $this->model = new Model\GithubAdapter(new Model\Github($config));
     $this->view = new View\Users();
     $this->errorView = new View\Error();
   }
@@ -47,22 +47,32 @@ class Users {
           $sortBy = $this->view->getSortBy();
           $users = $this->model->getAllUsers($page, $sortBy);
         } else {
-          $users = $this->model->getAllUsers($page);
+          $users = $this->model->getAllUsers($page, "followers");
         }
       }
     } catch (HttpStatus404Exception $e) {
       return $this->errorView->showPageNotFound("/users/?page=" . $page);
     }
 
+    $pages = $users["pages"];
+
     // RESPONSE FEL FRÅN GITHUB?
 
     // ^GITHUB SKICKAR BARA UT 1000 RESULTAT…
 
+   /** @note
+    * Twig is smart enough to figure out which getters are available
+    * so Twig can get $user->login instead of $user->getLogin.
+    * Both will work though, but if we remove the getter getLogin()
+    * Twig cannot access $user->login, so the private field is'nt explosed,
+    * Twig is just smart enough to use those getters.
+    */
+
     $auth = Session::get("access_token");
 
     $context = array(
-      "users" => $users["body"],
-      "pages" => $users["pages"],
+      "users" => $users["users"],
+      "pages" => $pages,
       "authenticated" => $auth
     );
 
@@ -77,8 +87,11 @@ class Users {
   public function show($user) {
     try {
       $userData = $this->model->getSingleUser($user);
-      $repos = $this->model->getUsersRepos($user);
+
+      $repos = $this->model->getUserRepos($user);
+
       $followers = $this->model->getUserFollowers($user);
+
     } catch (\Exception $e) {
       return $this->errorView->showPageNotFound("/users/" . $user);
     }

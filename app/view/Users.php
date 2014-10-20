@@ -4,6 +4,12 @@ namespace PopHub\View;
 
 class Users extends BaseView {
 
+  private $errorView;
+
+  public function __construct() {
+    $this->errorView = new Error();
+  }
+
   /**
    * View for showing all the users
    * @param Array $context
@@ -12,14 +18,17 @@ class Users extends BaseView {
   public function showAllUsers(array $context) {
     $page = $this->getPage();
 
-    $pages = $this->constructPaging($context["pages"]);
-
     $sort = $this->getSortBy();
 
+    $pages = $context["pages"];
+
     // Check for see if we tried to get a page that does not exist.
-    if ($page > $pages["num_of_pages"]) {
+    if ($page > $pages->getNumPages()) {
       return $this->errorView->showPageNotFound("/users/?page=" . $page);
     }
+
+    // var_dump(count($context["users"]));
+    // die;
 
     echo $this->render('users.html', array(
       "users" => $context["users"],
@@ -44,33 +53,6 @@ class Users extends BaseView {
     ));
   }
 
-  /**
-   * Removes the url from the items and just gets the numbers
-   * @param Array $pages
-   * @return Array
-   */
-  public function constructPaging($pages) {
-
-    if (isset($pages["first"])) {
-      $pages["first"] = preg_replace('/^.*page=\s*/', '', $pages["first"]);
-    }
-
-    if (isset($pages["prev"])) {
-      $pages["prev"] = preg_replace('/^.*page=\s*/', '', $pages["prev"]);
-    }
-
-    if (isset($pages["next"])) {
-      $pages["next"] = preg_replace('/^.*page=\s*/', '', $pages["next"]);
-    }
-
-    if (isset($pages["last"])) {
-      $pages["last"] = preg_replace('/^.*page=\s*/', '', $pages["last"]);
-    }
-
-    $pages["num_of_pages"] = isset($pages["last"]) ? $pages["last"] : $pages["prev"] + 1;
-
-    return $pages;
-  }
 
   /**
    * @return String

@@ -7,7 +7,7 @@
     <div class="col-sm-6 col-md-3">
 
       <div class="thumbnail">
-        <img src='{{ user.avatar_url }}&amp;s=250' height='250' />
+        <img src='{{ user.avatar }}&amp;s=250' height='250' />
         <div class="caption">
           <h2>{{ user.login }}</h2>
           <h3>{{ user.name }}</h3>
@@ -23,7 +23,7 @@
             {% if user.location %}
               <li><span class="glyphicon glyphicon-map-marker"></span>{{ user.location }}</li>
             {% endif %}
-            <li><span class="glyphicon glyphicon-time"></span>{{ user.created_at|date("F j, Y") }}</li>
+            <li><span class="glyphicon glyphicon-time"></span>{{ user.joined|date("F j, Y") }}</li>
           </ul>
         </div>
       </div>
@@ -38,73 +38,73 @@
 
           {% if event.type == "WatchEvent" %}
             <li class="list-group-item">
-              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
-                {{ event.actor.login }}
+              <a href="{{ url_to('users') }}/{{ event.user.login }}">
+                {{ event.user.login }}
               </a>
               starred
               <a href="https://github.com/{{ event.repo.name }}">
                 {{ event.repo.name }}
               </a>
               <span class="glyphicon glyphicon-share"></span>
-              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+              <time datetime="{{ event.created }}">{{ event.created|date("F j, Y") }}</time>
             </li>
           {% elseif event.type == "PushEvent" %}
             <li class="list-group-item">
-              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
-                {{ event.actor.login }}
+              <a href="{{ url_to('users') }}/{{ event.user.login }}">
+                {{ event.user.login }}
               </a>
               pushed to {{ event.payload.ref }} at
               <a href="https://github.com/{{ event.repo.name }}">
                 {{ event.repo.name }}
               </a>
               <span class="glyphicon glyphicon-share"></span>
-              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+              <time datetime="{{ event.created }}">{{ event.created|date("F j, Y") }}</time>
             </li>
           {% elseif event.type == "CreateEvent" %}
             {% if event.payload.ref %}
               <li class="list-group-item">
-                <a href="{{ url_to('users') }}/{{ event.actor.login }}">
-                  {{ event.actor.login }}
+                <a href="{{ url_to('users') }}/{{ event.user.login }}">
+                  {{ event.user.login }}
                 </a>
                 created branch {{ event.payload.ref }} at
                 <a href="https://github.com/{{ event.repo.name }}">
                   {{ event.repo.name }}
                 </a>
                 <span class="glyphicon glyphicon-share"></span>
-                <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+                <time datetime="{{ event.created }}">{{ event.created|date("F j, Y") }}</time>
               </li>
             {% else %}
               <li class="list-group-item">
-                <a href="{{ url_to('users') }}/{{ event.actor.login }}">
-                  {{ event.actor.login }}
+                <a href="{{ url_to('users') }}/{{ event.user.login }}">
+                  {{ event.user.login }}
                 </a>
                 created repository
                 <a href="https://github.com/{{ event.repo.name }}">
                   {{ event.repo.name }}
                 </a>
                 <span class="glyphicon glyphicon-share"></span>
-                <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+                <time datetime="{{ event.created }}">{{ event.created|date("F j, Y") }}</time>
               </li>
             {% endif %}
           {% elseif event.type == "DeleteEvent" %}
             <li class="list-group-item">
-              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
-                {{ event.actor.login }}
+              <a href="{{ url_to('users') }}/{{ event.user.login }}">
+                {{ event.user.login }}
               </a>
               deleted branch {{ event.payload.ref }} at {{ event.repo.name }}
-              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+              <time datetime="{{ event.created }}">{{ event.created|date("F j, Y") }}</time>
             </li>
           {% elseif event.type == "ReleaseEvent" %}
             <li class="list-group-item">
-              <a href="{{ url_to('users') }}/{{ event.actor.login }}">
-                {{ event.actor.login }}
+              <a href="{{ url_to('users') }}/{{ event.user.login }}">
+                {{ event.user.login }}
               </a>
               released
               <a href="{{ event.payload.release.html_url }}">
                 {{ event.payload.release.name }}
               </a>
               at {{ event.repo.name }}
-              <time datetime="{{ event.created_at }}">{{ event.created_at|date("F j, Y") }}</time>
+              <time datetime="{{ event.created }}">{{ event.created|date("F j, Y") }}</time>
             </li>
           {% endif %}
           {% endfor %}
