@@ -12,6 +12,7 @@ services:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
   - mkdir -p build/logs
