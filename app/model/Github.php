@@ -58,7 +58,7 @@ class Github {
     return $body;
   }
 
-  public function getAllUsers($page = null, $sortBy = "followers", $language = null) {
+  public function getAllUsers($page = null, $sortBy = "followers", $language = null, $value = 312, $perPage = 100) {
     # TODO: Better urls…
     #https://api.github.com/search/users?q=language:php&followers:%3E=312
     if ($language !== null) {
@@ -72,7 +72,7 @@ class Github {
     if ($sortBy === "repos") {
       $url .= rawurldecode(":>=228");
     } else {
-      $url .= rawurldecode(":>=312");
+      $url .= rawurldecode(":>=" . $value);
     }
 
     $url .= "&order=asc&client_id=" . $this->config->get("GITHUB_CLIENT_ID") .
@@ -183,23 +183,24 @@ class Github {
   }
 
   /**
+   * DEBUGGING FUNCTION
    * @param Response $response
    * @throws RateLimitExceededException
    */
-  private function rateLimitExceeded(Response $response) {
-    $numberOfCalls = $response->getHeader("X-RateLimit-Limit");
-    $remainingCalls = $response->getHeader("X-RateLimit-Remaining");
+  // private function rateLimitExceeded(Response $response) {
+  //   $numberOfCalls = $response->getHeader("X-RateLimit-Limit");
+  //   $remainingCalls = $response->getHeader("X-RateLimit-Remaining");
 
-    $timeRemaining = $response->getHeader("X-RateLimit-Reset");
-    $date = new \DateTime();
-    $date->setTimestamp($timeRemaining);
-    print("<pre>Number of calls: " . $numberOfCalls . "</pre>");
-    print("<pre>Number of calls left: " . $remainingCalls . "</pre>");
-    print("<pre>New set of calls available at: " . $date->format('Y-m-d H:i:s') . "</pre>");
+  //   $timeRemaining = $response->getHeader("X-RateLimit-Reset");
+  //   $date = new \DateTime();
+  //   $date->setTimestamp($timeRemaining);
+  //   print("<pre>Number of calls: " . $numberOfCalls . "</pre>");
+  //   print("<pre>Number of calls left: " . $remainingCalls . "</pre>");
+  //   print("<pre>New set of calls available at: " . $date->format('Y-m-d H:i:s') . "</pre>");
 
-    if ($numberOfCalls !== null && $remainingCalls !== null
-      && $remainingCalls == 0) {
-      throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
-    }
-  }
+  //   if ($numberOfCalls !== null && $remainingCalls !== null
+  //     && $remainingCalls == 0) {
+  //     throw new RateLimitExceededException("Github does not allow more requests for you! Limit is: " . $numberOfCalls);
+  //   }
+  // }
 }

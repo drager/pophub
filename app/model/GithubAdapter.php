@@ -41,7 +41,11 @@ class GithubAdapter implements ServiceInterface {
    * @return User object
    */
   public function getLoggedInUser($accessToken) {
-    $data = $this->github->getLoggedInUser($accessToken);
+    try {
+      $data = $this->github->getLoggedInUser($accessToken);
+    } catch (\Exception $e) {
+      return null;
+    }
 
     $login = $data->login;
     $avatar = $data->avatar_url;
@@ -60,8 +64,8 @@ class GithubAdapter implements ServiceInterface {
    * @param String $language
    * @return Array $users, $pages
    */
-  public function getAllUsers($page = null, $sortBy = null, $language = null) {
-    $data = $this->github->getAllUsers($page, $sortBy, $language);
+  public function getAllUsers($page = null, $sortBy = null, $language = null, $value = 312, $perPage = 100) {
+    $data = $this->github->getAllUsers($page, $sortBy, $language, $value, $perPage);
 
     foreach ($data["body"]->items as $key => $userData) {
       $login = $userData->login;

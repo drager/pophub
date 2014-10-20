@@ -8,6 +8,7 @@ require __DIR__.'/../../bootstrap/start.php';
 
 use Kagu\Config;
 use Kagu\Exception\MissingCredentialsException;
+use Kagu\Cache;
 
 use PopHub\Model;
 
@@ -29,6 +30,11 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
     $expectedArray = array("login" => "torvalds");
 
     $users = $this->github->getAllUsers(null, "followers");
+
+    $pages = $users["pages"];
+
+    $this->assertEquals("2", $pages->getNext());
+    $this->assertEquals("10", $pages->getLast());
 
     $this->assertEquals($expectedArray["login"], $users["users"][0]->getLogin());
   }
@@ -148,9 +154,41 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
 
     $events = $this->github->getUserActivity($user);
 
+    // Flush the cache
+    $memcached = new Cache\MemcachedAdapter(new Cache\Memcached($this->config));
+    $memcached->flush();
+
     $this->assertEquals($expectedArray["login"], $events[0]->getUser()->getLogin());
   }
 
+  public function testCanSearchForUsers() {
+    $user = "jh222xk";
+
+    $expectedArray = array("login" => "jh222xk");
+
+    $users = $this->github->searchUsers($user);
+
+    $this->assertEquals($expectedArray["login"], $users[0]->getLogin());
+  }
+
+  public function testCanGetAllUsersWithoutSortingLimitedResult() {
+    $expectedArray = array("login" => "torvalds");
+
+    $users = $this->github->getAllUsers(null, "followers", null, 5000);
+
+    $pages = $users["pages"];
+
+    $this->assertEmpty($pages->getFirst());
+    $this->assertEmpty($pages->getLast());
+
+    $this->assertEquals($expectedArray["login"], $users["users"][0]->getLogin());
+  }
+
+  public function testCannotGetLoggedInUser() {
+    $expectedArray = array("login" => "jh222xk");
+
+    $user = $this->github->getLoggedInUser("some_invalid_token");
+
+    $this->assertNull($user);
+  }
 }
-
-

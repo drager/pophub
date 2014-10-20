@@ -20,6 +20,7 @@ class Response {
    * Standard HTTP status codes.
    */
   const STATUS_404 = 404;
+  const STATUS_401 = 401;
   const STATUS_422 = 422;
   const STATUS_500 = 500;
 
@@ -37,6 +38,10 @@ class Response {
 
     if ($status === self::STATUS_404) {
       throw new HttpStatus404Exception("Page not found.");
+    }
+
+    if ($status === self::STATUS_401) {
+      throw new HttpStatus404Exception("Unauthorized.");
     }
 
     if ($status === self::STATUS_422) {
