@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Search - {% endblock %}
+
+{% block content %}
+  <div class="row">
+    {% for user in users %}
+      <div class="col-xs-6 col-md-2">
+        <div class="thumbnail">
+          <img src="{{ user.avatar }}&amp;s=128" height="128" width="155" />
+          <div class="caption">
+            <h2><a href="{{ url_to('users') }}/{{ user.login }}">{{ user.login }}</a></h2>
+            {{ user.followers }}
+            {{ user.public_repos }}
+            {% if authenticated %}
+              <p>
+                <a href="{{ url_to('users') }}" class="btn btn-primary" role="button">
+                  <span class="glyphicon glyphicon-user"></span>
+                  Follow</a>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -36,7 +36,7 @@ class GithubTest extends \PHPUnit_Framework_TestCase {
   public function testCanGetAllUsersSortingByRepos() {
     $sortBy = "repos";
 
-    $expectedArray = array("login" => "visionmedia");
+    $expectedArray = array("login" => "tj");
 
     $users = $this->github->getAllUsers(null, $sortBy);
 

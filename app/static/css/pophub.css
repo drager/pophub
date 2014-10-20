@@ -42,9 +42,23 @@
   }
 }
 
+.top-nav .navbar-form .form-control {
+  width: 100%;
+}
+
+.top-nav .navbar-form.navbar-left {
+  margin-left: 3.5em;
+  margin-top: 0.9em;
+}
+
+.top-nav .form-group {
+  width: 480px;
+  margin-top: -0.1em;
+}
+
 .top-nav ul {
   float: left;
-  width: 85%;
+  /*width: 85%;*/
   list-style-type: none;
   padding: 0;
   margin: 1em 0 1em 1em;
@@ -55,8 +69,9 @@
   margin: 0 0 0 2em;
 }
 
-.top-nav ul li.right {
+.top-nav ul.right {
   float: right;
+  margin-right: 1em;
 }
 
 .top-nav ul li a {

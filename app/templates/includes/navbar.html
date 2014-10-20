@@ -1,0 +1,41 @@
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <h1 class="site-brand"><a href="/">PopHub</a></h1>
+</div>
+
+<div class="collapse navbar-collapse" id="navbar-collapse-1">
+  <ul>
+    <li><span class="glyphicon glyphicon-home"></span><a href="{{ url_to('/') }}">Home</a></li>
+    <li><span class="glyphicon glyphicon-user"></span><a href="{{ url_to('users') }}">All users</a></li>
+  </ul>
+
+  <form class="navbar-form navbar-left" action="{{ url_to('search') }}" method="get" role="search">
+    <div class="form-group">
+      <input type="text" id="q" name="q" class="form-control" placeholder="Search for users...">
+    </div>
+    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button>
+  </form>
+
+  <ul class="right">
+    {% if authenticated %}
+      <li>
+        <span class="glyphicon glyphicon-user"></span>
+        <a href="{{ url_to('user') }}">Your profile</a>
+      </li>
+      <li>
+        <span class="glyphicon glyphicon-off"></span>
+        <a href="{{ url_to('logout') }}">Logout</a>
+      </li>
+    {% else %}
+    <li class="right">
+      <span class="glyphicon glyphicon-lock"></span>
+      <a href="{{ url_to('login') }}">Sign in with GitHub</a>
+    </li>
+    {% endif %}
+  </ul>
+</div>

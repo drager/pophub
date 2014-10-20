@@ -107,4 +107,25 @@ class Users {
 
     return $this->view->showSingleUser($context);
   }
+
+  public function search() {
+    $searchQuery = $this->view->getSearchBy();
+
+    $users = null;
+
+    if ($searchQuery) {
+      $users = $this->model->searchUsers($searchQuery);
+    }
+
+    $auth = Session::get("access_token");
+
+    $context = array("users" => $users, "authenticated" => $auth);
+
+    return $this->view->showSearch($context);
+
+  }
 }
+
+
+
+

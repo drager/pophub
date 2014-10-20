@@ -148,6 +148,17 @@ class Github {
     return json_decode($response->getBody());
   }
 
+  public function searchUsers($query) {
+   $url = $this->baseUrl . "/search/users?q=" . rawurldecode($query) . "&client_id="
+      . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
+
+    $request = new Request($url);
+
+    $response = $request->get();
+
+    return json_decode($response->getBody());
+  }
+
   /**
    * @param Response $response
    * @return Array

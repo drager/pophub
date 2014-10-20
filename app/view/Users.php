@@ -53,6 +53,15 @@ class Users extends BaseView {
     ));
   }
 
+  public function showSearch(array $context) {
+    echo $this->render('search.html', array("users" => $context["users"], "authenticated" => $context["authenticated"]));
+  }
+
+  public function getSearchBy() {
+    if (isset($_GET["q"])) {
+      return $_GET["q"];
+    }
+  }
 
   /**
    * @return String

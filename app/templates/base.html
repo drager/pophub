@@ -17,27 +17,7 @@
 </head>
 <body>
   <nav class="top-nav" role="navigation">
-  <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <h1 class="site-brand"><a href="/">PopHub</a></h1>
-    </div>
-    <div class="collapse navbar-collapse" id="navbar-collapse-1">
-      <ul>
-      <li><span class="glyphicon glyphicon-home"></span><a href="{{ url_to('/') }}">Home</a></li>
-      <li><span class="glyphicon glyphicon-user"></span><a href="{{ url_to('users') }}">All users</a></li>
-      {% if authenticated %}
-        <li class="right"><span class="glyphicon glyphicon-off"></span><a href="{{ url_to('logout') }}">Logout</a></li>
-        <li class="right"><span class="glyphicon glyphicon-user"></span><a href="{{ url_to('user') }}">Your profile</a></li>
-      {% else %}
-        <li class="right"><span class="glyphicon glyphicon-lock"></span><a href="{{ url_to('login') }}">Sign in with GitHub</a></li>
-      {% endif %}
-    </ul>
-    </div>
+    {% include "includes/navbar.html" %}
   </nav>
   <div class="container">
     {% block content %}{% endblock %}

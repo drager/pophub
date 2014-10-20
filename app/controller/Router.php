@@ -24,6 +24,8 @@ class Router {
 
   private $logoutPath = "/logout/";
 
+  private $searchPath = "/search/";
+
   public function doRoute() {
     $klein = new Klein();
     $this->config = new Config("../app/config/app.php");
@@ -76,6 +78,11 @@ class Router {
         $controller->show($request->username);
       });
 
+    });
+
+    $klein->respond("GET", $this->searchPath . "?", function ($request, $response) {
+      $controller = new Users();
+      $controller->search();
     });
 
     $klein->respond("404", function ($request) {
