@@ -2,6 +2,9 @@
 
 namespace PopHub\Model;
 
+use Kagu\Cache;
+use Kagu\Config\Config;
+
 class GithubAdapter implements ServiceInterface {
 
   private $github;
@@ -11,7 +14,9 @@ class GithubAdapter implements ServiceInterface {
    * @return void
    */
   public function __construct(Github $github) {
+    $config = new Config(__DIR__."/../config/app.php");
     $this->github = $github;
+    $this->memcached = new Cache\MemcachedAdapter(new Cache\Memcached($config));
   }
 
   /**
@@ -84,6 +89,7 @@ class GithubAdapter implements ServiceInterface {
    * @return User user
    */
   public function getSingleUser($user) {
+
     $data = $this->github->getSingleUser($user);
 
     $login = $data->login;
@@ -93,7 +99,9 @@ class GithubAdapter implements ServiceInterface {
     $location = isset($data->location) ? $data->location : null;
     $joined = $data->created_at;
 
-    return new User($login, $name, $email, $location, $joined, $avatar);
+    $user = new User($login, $name, $email, $location, $joined, $avatar);
+
+    return $user;
   }
 
   /**
@@ -140,24 +148,31 @@ class GithubAdapter implements ServiceInterface {
    * @return Array $events
    */
   public function getUserActivity($user) {
-    $data = $this->github->getUserActivity($user);
+    $cacheKey = "events_{$user}";
 
-    foreach ($data as $eventData) {
-      $login = $eventData->actor->login;
-      $avatar = $eventData->actor->avatar_url;
+    // Check caching, we will make a new request if the cache is empty.
+    if (false === ($events = $this->memcached->get($cacheKey))) {
+      $data = $this->github->getUserActivity($user);
 
-      $repoName = $eventData->repo->name;
+      foreach ($data as $eventData) {
+        $login = $eventData->actor->login;
+        $avatar = $eventData->actor->avatar_url;
 
-      $type = $eventData->type;
-      $payload = $eventData->payload;
-      $createdAt = $eventData->created_at;
+        $repoName = $eventData->repo->name;
 
-      $user = new User($login, null, null, null, null, $avatar);
+        $type = $eventData->type;
+        $payload = $eventData->payload;
+        $createdAt = $eventData->created_at;
 
-      $events[] = new Activity($user, new Repo($repoName, $user), $type, $payload, $createdAt);
+        $user = new User($login, null, null, null, null, $avatar);
+
+        $events[] = new Activity($user, new Repo($repoName, $user), $type, $payload, $createdAt);
+      }
+
+      // Save the events to Memcached.
+      $this->memcached->set($cacheKey, $events);
     }
 
     return $events;
   }
-
 }

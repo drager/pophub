@@ -25,3 +25,4 @@ $loader->addNamespace('Kagu\Config', $kaguPath."Config/");
 $loader->addNamespace('Kagu\Exception', $kaguPath."Exception/");
 $loader->addNamespace('Kagu\View', $kaguPath."View/");
 $loader->addNamespace('Kagu\Database', $kaguPath."Database/");
+$loader->addNamespace('Kagu\Cache', $kaguPath."Cache/");

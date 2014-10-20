@@ -26,7 +26,7 @@ class Followers extends MysqlAdapter {
   public function getFollowers($user) {
     $db = $this->connect();
 
-    $result = $this->select($this->table, $this->user, $this->owner, array($user));
+    $result = $this->select($this->table, $this->user, $this->owner, array($user), "created_at");
 
     return $result;
   }

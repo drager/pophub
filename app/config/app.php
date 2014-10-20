@@ -16,5 +16,9 @@ return array(
 
   'DB_USER' => "appUser",
 
-  'DB_PASSWORD' => "password"
+  'DB_PASSWORD' => "password",
+
+  'MEMCACHED_HOST' => "localhost",
+
+  'MEMCACHED_PORT' => 11211
 );

@@ -47,9 +47,8 @@ class MysqlAdapter implements DatabaseAdapterInterface {
   public function select($table, $fields = "*", $where = null, array $params = null, $order = null, $limit = null) {
     $db = $this->dbConnection;
 
-    $sql = "SELECT " . $fields . " FROM " . $table . ($where ? " WHERE " . $where . " = ?" : "");
-
-    // var_dump($sql);
+    $sql = "SELECT " . $fields . " FROM " . $table . ($where ? " WHERE " . $where . " = ?" : "") .
+      ($order ? " ORDER BY " . $order . " DESC" : "");
 
     $query = $db->prepare($sql);
     $params ? $query->execute($params) : $query->execute();
