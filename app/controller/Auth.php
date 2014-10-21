@@ -66,6 +66,12 @@ class Auth {
   public function loggedInUser($accessToken) {
     $user = $this->model->getLoggedInUser($accessToken);
 
+    // If we can't find the user, just destroy it.
+    if ($user === null) {
+      Session::destroy("access_token");
+      return;
+    }
+
     $auth = Session::get("access_token");
 
     $followers = $this->followers->getFollowers($user->getLogin());
