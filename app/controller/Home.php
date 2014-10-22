@@ -9,8 +9,8 @@ use PopHub\Model\Session;
 class Home {
   private $view;
 
-  function __construct() {
-    $this->view = new View\Home();
+  function __construct(View\Home $view) {
+    $this->view = $view;
   }
 
   /**

@@ -7,8 +7,8 @@ use PopHub\View;
 class Error {
   private $view;
 
-  function __construct() {
-    $this->view = new View\Error();
+  function __construct(View\Error $view) {
+    $this->view = $view;
   }
 
   /**
