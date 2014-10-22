@@ -18,7 +18,8 @@ class Home {
    * @return The showHome view
    */
   public function index() {
-    $auth = Session::get("access_token");
+    $session = new Session();
+    $auth = $session->get("access_token");
 
     $context = array("authenticated" => $auth);
 
