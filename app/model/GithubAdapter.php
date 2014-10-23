@@ -116,6 +116,8 @@ class GithubAdapter implements ServiceInterface {
   public function getUserRepos($user) {
     $data = $this->github->getUserRepos($user);
 
+    $repos = null;
+
     foreach ($data as $repoData) {
       $repoName = $repoData->name;
       $owner = $repoData->owner;
@@ -136,6 +138,8 @@ class GithubAdapter implements ServiceInterface {
    */
   public function getUserFollowers($user) {
     $data = $this->github->getUserFollowers($user);
+
+    $followers = null;
 
     foreach ($data as $followerData) {
       $login = $followerData->login;

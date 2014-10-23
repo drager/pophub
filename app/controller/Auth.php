@@ -52,7 +52,9 @@ class Auth {
       return;
     }
 
-    Session::set("access_token", $token);
+    $session = new Session();
+
+    $session->set("access_token", $token);
 
     return $token;
   }
@@ -72,7 +74,9 @@ class Auth {
       return;
     }
 
-    $auth = Session::get("access_token");
+    $session = new Session();
+
+    $auth = $session->get("access_token");
 
     $followers = $this->followers->getFollowers($user->getLogin());
 

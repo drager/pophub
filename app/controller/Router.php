@@ -9,6 +9,7 @@ use Klein\Klein;
 use Kagu\Config\Config;
 
 use PopHub\Controller;
+use PopHub\View;
 use PopHub\Model\Session;
 
 class Router {
@@ -31,7 +32,7 @@ class Router {
     $this->config = new Config("../app/config/app.php");
 
     $klein->respond("GET", $this->homePath, function () {
-      $controller = new Home();
+      $controller = new Home(new View\Home());
       $controller->index();
     });
 
@@ -52,7 +53,8 @@ class Router {
 
     $klein->respond("GET", $this->userPath . "?", function ($request, $response) {
       $controller = new Auth();
-      $token = Session::get("access_token");
+      $session = new Session();
+      $token = $session->get("access_token");
 
       if ($token) {
         return $controller->loggedInUser($token);
@@ -62,7 +64,8 @@ class Router {
     });
 
     $klein->respond("GET", $this->logoutPath . "?", function ($request, $response) {
-      Session::destroy("access_token");
+      $session = new Session();
+      $session->destroy("access_token");
       return $response->redirect($this->homePath);
     });
 
@@ -87,7 +90,7 @@ class Router {
 
     $klein->respond("404", function ($request) {
       $page = $request->uri();
-      $controller = new Error();
+      $controller = new Error(new View\Error());
       $controller->pageNotFoundError($page);
     });
 
@@ -96,7 +99,7 @@ class Router {
         throw new \Exception($err_msg);
       }
       else {
-        $controller = new Error();
+        $controller = new Error(new View\Error());
         $controller->serverError();
         error_log($err_msg, 3, $this->config->get("ERROR_LOG"));
       }

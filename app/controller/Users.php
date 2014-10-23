@@ -68,7 +68,9 @@ class Users {
     * Twig is just smart enough to use those getters.
     */
 
-    $auth = Session::get("access_token");
+    $session = new Session();
+
+    $auth = $session->get("access_token");
 
     $context = array(
       "users" => $users["users"],
@@ -96,7 +98,9 @@ class Users {
       return $this->errorView->showPageNotFound("/users/" . $user);
     }
 
-    $auth = Session::get("access_token");
+    $session = new Session();
+
+    $auth = $session->get("access_token");
 
     $context = array(
       "user" => $userData,
@@ -117,7 +121,9 @@ class Users {
       $users = $this->model->searchUsers($searchQuery);
     }
 
-    $auth = Session::get("access_token");
+    $session = new Session();
+
+    $auth = $session->get("access_token");
 
     $context = array("users" => $users, "authenticated" => $auth);
 
