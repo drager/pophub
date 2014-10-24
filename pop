@@ -1,0 +1,95 @@
+#!/usr/local/bin/php
+
+<?php
+
+require_once __DIR__.'/app/bootstrap/start.php';
+
+use Kagu\Config\Config;
+use PopHub\Model;
+
+
+class Pop {
+
+  public function __construct(Config $config) {
+    $this->config = $config;
+  }
+
+  public function create() {
+    $this->followers = new Model\Followers($this->config);
+    $this->followers->createTable();
+  }
+
+  public function update() {
+    $install = shell_exec("composer install");
+    return $install;
+  }
+
+  public function test() {
+    $test = shell_exec(__DIR__ . "/vendor/bin/phpunit app/tests/");
+    return $test;
+  }
+
+  public function testHelpers() {
+    $test = shell_exec(__DIR__ . "/vendor/bin/phpunit kagu/tests/");
+    return $test;
+  }
+
+  public function testCoverage() {
+    $test = shell_exec(__DIR__ . "/vendor/bin/phpunit --coverage-html ./report app/tests/");
+    return $test;
+  }
+
+  public function help() {
+    return ("Usage: pop subcommand
+
+    Options:
+      create        --- Creates the necessary tables for the project
+      update        --- Updates the dependencies needed (composer install)
+      test          --- Runs the testsuit on the project
+      test_helpers  --- Runs the testsuit for the helpers
+      test_coverage --- Runs the testsuit with coverage
+      help          --- Displays this message
+
+    ");
+  }
+}
+
+if (isset($argv[1]) === true) {
+  $arg = $argv[1];
+
+  $config = new Config(__DIR__."/app/config/app.php");
+  $pop = new Pop($config);
+
+  switch ($arg) {
+    case "create":
+      print "Creating table...\n\n";
+      try {
+        $pop->create();
+      } catch (\Exception $e) {
+        print $e->getMessage();
+        return;
+      }
+      print "Done!\n";
+      break;
+    case "update":
+      print $pop->update();
+      break;
+    case "test":
+      print $pop->test();
+      break;
+    case "test_helpers":
+      print $pop->testHelpers();
+      break;
+    case "test_coverage":
+      print $pop->testCoverage();
+      break;
+    case "help":
+      print $pop->help();
+      break;
+    default:
+      print "Not a valid subcommand -- type 'pop help' for help.";
+      break;
+  }
+} else {
+  print "Please provide a subcommand -- type 'pop help' for help.";
+}
