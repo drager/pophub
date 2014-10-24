@@ -29,6 +29,8 @@ class Router {
 
   private $followPath = "/follow/";
 
+  private $unFollowPath = "/unfollow/";
+
   public function doRoute() {
     $klein = new Klein();
     $this->config = new Config("../app/config/app.php");
@@ -93,6 +95,11 @@ class Router {
     $klein->respond("GET", $this->followPath . "[:username]/?", function ($request, $response) {
       $controller = new Users();
       $controller->follow($request->username);
+    });
+
+    $klein->respond("GET", $this->unFollowPath . "[:username]/?", function ($request, $response) {
+      $controller = new Users();
+      $controller->unFollow($request->username);
     });
 
     $klein->respond("404", function ($request) {

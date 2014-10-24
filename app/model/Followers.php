@@ -38,7 +38,7 @@ class Followers extends MysqlAdapter {
   public function getFollowers($user) {
     $db = $this->connect();
 
-    $result = $this->select($this->table, $this->user, $this->owner, array($user), "created_at");
+    $result = $this->select($this->table, $this->user, $this->owner, array($user), $this->created);
 
     return $result;
   }
@@ -52,6 +52,12 @@ class Followers extends MysqlAdapter {
     }
 
     return false;
+  }
+
+  public function removeFollower($owner, $user) {
+    $db = $this->connect();
+
+    return $this->delete($this->table, array($this->owner, $this->user), array($owner, $user), $this->created);
   }
 
   public function contains($user, $owner) {

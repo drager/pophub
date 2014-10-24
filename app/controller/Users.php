@@ -178,7 +178,28 @@ class Users {
       }
 
       return $this->view->createFollower($context);
+    }
+  }
+
+  public function unFollow($user) {
+    $session = new Session();
+    $accessToken = $session->get("access_token");
+
+    if ($accessToken !== null) {
+      $owner = $this->model->getLoggedInUser($accessToken)->getLogin();
+
+      $successMsg = $this->view->getSuccessMessage();
+      $errorMsg = $this->view->getErrorMessage();
+
+      if ($this->followers->removeFollower($owner, $user)) {
+        $context = array($successMsg => "You no longer follow " . $user);
       }
+      else {
+        $context = array($errorMsg => "You do not follow " . $user . " so you cannot unfollow");
+      }
+
+      return $this->view->createFollower($context);
+    }
   }
 }
 

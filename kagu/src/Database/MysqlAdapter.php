@@ -98,6 +98,22 @@ class MysqlAdapter implements DatabaseAdapterInterface {
     $query->execute($params);
   }
 
+  public function delete($table, array $where = null, array $params) {
+    $db = $this->dbConnection;
+
+    if ($where > 1) {
+      $where = join(" = ? AND ", array_values($where));
+    }
+
+    $sql = "DELETE FROM " . $table . ($where ? " WHERE " . $where . " = ?" : "");
+
+    $query = $db->prepare($sql);
+
+    $query->execute($params);
+
+    return $query->rowCount() ? true : false;
+  }
+
   /**
    * Creates the given table, with the given fields
    * @param String $table

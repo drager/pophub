@@ -52,7 +52,7 @@
             {% if authenticated %}
               {% if user.isfollowed %}
                 <p>
-                  <a href="{{ url_to('follow') }}/{{ user.login }}" class="btn btn-danger" role="button">
+                  <a href="{{ url_to('unfollow') }}/{{ user.login }}" class="btn btn-danger" role="button">
                     <span class="glyphicon glyphicon-user"></span>
                     Unfollow
                   </a>
