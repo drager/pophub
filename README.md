@@ -14,13 +14,20 @@ PHP Version 5.4, 5.5, 5.6
 
 Check [composer.json](https://github.com/jh222xk/pophub/blob/master/composer.json) for dependencies needed.
 
+Those components in `composer.json` certainly has some dependencies as well. (Hopefully those will be installed without problems).
+
+Memcached is a dependency as well.
+
+## Local version
+
+### Keep in mind
+Keep in mind that the login **WONT** work without a valid `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
+
 ### Install dependencies
 
 First of get [composer](https://getcomposer.org/)
 
 Then run `composer install` and all the dependencies will be installed.
-
-## Local version
 
 ### Windows
 
