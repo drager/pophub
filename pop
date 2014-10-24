@@ -1,4 +1,4 @@
-#!/usr/local/bin/php
+#!/usr/bin/php
 
 <?php
 
@@ -17,11 +17,6 @@ class Pop {
   public function create() {
     $this->followers = new Model\Followers($this->config);
     $this->followers->createTable();
-  }
-
-  public function update() {
-    $install = shell_exec("composer install");
-    return $install;
   }
 
   public function test() {
@@ -44,7 +39,6 @@ class Pop {
 
     Options:
       create        --- Creates the necessary tables for the project
-      update        --- Updates the dependencies needed (composer install)
       test          --- Runs the testsuit on the project
       test_helpers  --- Runs the testsuit for the helpers
       test_coverage --- Runs the testsuit with coverage
@@ -70,9 +64,6 @@ if (isset($argv[1]) === true) {
         return;
       }
       print "Done!\n";
-      break;
-    case "update":
-      print $pop->update();
       break;
     case "test":
       print $pop->test();
