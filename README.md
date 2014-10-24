@@ -68,8 +68,8 @@ CREATE TABLE followers (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 user VARCHAR(255) NOT NULL,
 owner VARCHAR(255) NOT NULL,
-created_at DATETIME NOT NULL
-);```
+created_at DATETIME NOT NULL);
+```
 
 ### Run the application
 
