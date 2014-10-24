@@ -16,6 +16,13 @@ Check [composer.json](https://github.com/jh222xk/pophub/blob/master/composer.jso
 
 Those components in `composer.json` certainly has some dependencies as well. (Hopefully those will be installed without problems).
 
+If `composer install` fails it may depend on the --dev specific dependencies.
+They use **cURL** so enable it or skip those dependencies running
+`composer install --no-dev` instead.
+
+**KEEP IN MIND** if you run using `composer install --no-dev` you cannot
+run tests.
+
 **Memcached** and **MySQL** is a dependency as well.
 
 ## Local version
@@ -34,6 +41,10 @@ Then run `composer install` and all the dependencies will be installed.
 Windows can have trouble setting up memcached...
 
 First of all you need memcached for windows, there's a guide [here](http://zurmo.org/wiki/installing-memcache-on-windows). In the section "Installing PHP Extension" get a file [here](http://windows.php.net/downloads/pecl/releases/memcache/3.0.8/) instead, and choose your php version.
+
+If you can't get memcache**d** (Notice the d at the end). but can install
+memcache you will need to change the line [here](https://github.com/jh222xk/pophub/blob/master/kagu/src/Cache/Memcached.php#L15)
+from `new \Memcached()` to `new \Memcache()`.
 
 ### Ubuntu
 
@@ -90,3 +101,12 @@ and for the "helpers" type `vendor/bin/phpunit kagu/tests/`
 ### Test/Code coverage
 
 To get code coverage simply locate to `path/to/pophub/` and type `vendor/bin/phpunit --coverage-html ./report app/tests/` and PHPUnit will generate a report for you.
+
+
+### Travis
+Continuous Integration using Travis CI can be found at 
+https://travis-ci.org/jh222xk/pophub
+
+### Coveralls
+Code coverage using Coveralls can be found at 
+https://coveralls.io/r/jh222xk/pophub
