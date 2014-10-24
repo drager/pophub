@@ -8,8 +8,10 @@ use Kagu\Config\Config;
 class Followers extends MysqlAdapter {
 
   private $table = "followers";
-  private $owner = "owner";
+  private $primaryKey = "id";
   private $user = "user";
+  private $owner = "owner";
+  private $created = "created_at";
 
   /**
    * @param Config $config
@@ -17,6 +19,16 @@ class Followers extends MysqlAdapter {
    */
   public function __construct(Config $config) {
     $this->config = $config;
+  }
+
+  public function createTable() {
+    $db = $this->connect();
+    $result = $this->create($this->table, array(
+      $this->primaryKey => "INT NOT NULL AUTO_INCREMENT PRIMARY KEY",
+      $this->user => "VARCHAR(255) NOT NULL",
+      $this->owner => "VARCHAR(255) NOT NULL",
+      $this->created => "DATETIME NOT NULL"
+    ));
   }
 
   /**

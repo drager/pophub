@@ -13,12 +13,21 @@
             {{ user.followers }}
             {{ user.public_repos }}
             {% if authenticated %}
+              {% if user.isfollowed %}
+                <p>
+                  <a href="{{ url_to('follow') }}/{{ user.login }}" class="btn btn-danger" role="button">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Unfollow
+                  </a>
+                </p>
+              {% else %}
               <p>
                 <a href="{{ url_to('follow') }}/{{ user.login }}" class="btn btn-primary" role="button">
                   <span class="glyphicon glyphicon-user"></span>
                   Follow
                 </a>
               </p>
+              {% endif %}
             {% endif %}
           </div>
         </div>

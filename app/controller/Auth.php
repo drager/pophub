@@ -29,6 +29,7 @@ class Auth {
     $this->followers = new Model\Followers($config);
 
     $this->view = new View\Auth();
+    $this->search = new View\Users();
   }
 
   /**
@@ -92,7 +93,9 @@ class Auth {
       "followers" => $followers,
       "user" => $user,
       "events" => $events,
-      "authenticated" => $auth
+      "authenticated" => $auth,
+      "search_q" => $this->search->getSearchFieldName(),
+      "search_value" => $this->search->getSearchBy()
     );
 
     return $this->view->showLoggedIn($context);

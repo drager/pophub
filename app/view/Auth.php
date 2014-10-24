@@ -14,7 +14,9 @@ class Auth extends BaseView {
       "user" => $context["user"],
       "authenticated" => $context["authenticated"],
       "followers" => $context["followers"],
-      "events" => $context["events"]
+      "events" => $context["events"],
+      "search_q" => $context["search_q"],
+      "search_value" => $context["search_value"]
     ));
   }
 }

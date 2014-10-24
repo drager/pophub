@@ -11,6 +11,7 @@ class Home {
 
   function __construct(View\Home $view) {
     $this->view = $view;
+    $this->search = new View\Users();
   }
 
   /**
@@ -21,7 +22,11 @@ class Home {
     $session = new Session();
     $auth = $session->get("access_token");
 
-    $context = array("authenticated" => $auth);
+    $context = array(
+      "authenticated" => $auth,
+      "search_q" => $this->search->getSearchFieldName(),
+      "search_value" => $this->search->getSearchBy()
+    );
 
     return $this->view->showHome($context);
   }

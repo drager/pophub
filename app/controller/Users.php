@@ -73,6 +73,20 @@ class Users {
 
     $auth = $session->get("access_token");
 
+    if ($auth !== null) {
+      $owner = $this->model->getLoggedInUser($auth)->getLogin();
+
+      $followers = $this->followers->getFollowers($owner);
+
+      $followerLogins = array_map(function($item) { return $item["user"]; }, $followers);
+
+      foreach ($users["users"] as $key => $value) {
+        if (in_array($value->getLogin(), $followerLogins)) {
+          $value->setIsFollowed(true);
+        }
+      }
+    }
+
     $context = array(
       "users" => $users["users"],
       "pages" => $pages,
@@ -125,6 +139,20 @@ class Users {
     $session = new Session();
 
     $auth = $session->get("access_token");
+
+    if ($auth !== null && $users !== null) {
+      $owner = $this->model->getLoggedInUser($auth)->getLogin();
+
+      $followers = $this->followers->getFollowers($owner);
+
+      $followerLogins = array_map(function($item) { return $item["user"]; }, $followers);
+
+      foreach ($users as $key => $value) {
+        if (in_array($value->getLogin(), $followerLogins)) {
+          $value->setIsFollowed(true);
+        }
+      }
+    }
 
     $context = array("users" => $users, "authenticated" => $auth);
 

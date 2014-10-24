@@ -16,6 +16,8 @@ class User {
 
   private $avatar;
 
+  private $is_followed;
+
   /**
    * @param String $login
    * @param String $name
@@ -74,6 +76,14 @@ class User {
    */
   public function getJoined() {
     return $this->joined;
+  }
+
+  public function setIsFollowed($value) {
+    $this->is_followed = $value;
+  }
+
+  public function getIsFollowed() {
+    return $this->is_followed;
   }
 
 }

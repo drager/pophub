@@ -50,14 +50,14 @@ class MysqlAdapter implements DatabaseAdapterInterface {
     $sql = "SELECT " . $fields . " FROM " . $table . ($where ? " WHERE " . $where . " = ?" : "") .
       ($order ? " ORDER BY " . $order . " DESC" : "");
 
-    var_dump($sql);
+    #var_dump($sql);
 
     $query = $db->prepare($sql);
     $params ? $query->execute($params) : $query->execute();
 
     $result = $query->fetchAll(\PDO::FETCH_ASSOC);
 
-    var_dump($params);
+    #var_dump($params);
 
     if ($result) {
       return $result;
@@ -96,5 +96,34 @@ class MysqlAdapter implements DatabaseAdapterInterface {
 
     $query = $db->prepare($sql);
     $query->execute($params);
+  }
+
+  /**
+   * Creates the given table, with the given fields
+   * @param String $table
+   * @param Array $fields
+   */
+  public function create($table, array $fields) {
+    $db = $this->dbConnection;
+
+    $data = join(", ", array_keys($fields));
+    $values = join(", ", array_values($fields));
+    $params = explode(", ", $values);
+
+    $fieldsCount = count($fields);
+    $count = 0;
+
+    $new = "";
+
+    foreach ($fields as $key => $value) {
+      $count++;
+      $count === $fieldsCount ? $new .= $key . " " . $value : $new .= $key . " " . $value . ", ";
+    }
+
+    $sql = "CREATE TABLE " . $table . " (" . $new . ")";
+
+    if ($db->exec($sql) === false) {
+      throw new \Exception("'$sql' failed " . $db->error);
+    }
   }
 }

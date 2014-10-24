@@ -12,6 +12,8 @@ class Users extends BaseView {
 
   private $successMsg = "Message::Success";
 
+  private $searchFieldName = "q";
+
   public function __construct() {
     $this->errorView = new Error();
     $this->cookie = new CookieJar();
@@ -55,7 +57,9 @@ class Users extends BaseView {
       "authenticated" => $context["authenticated"],
       "pages" => $pages,
       "sort" => $sort,
-      "message" => $message
+      "message" => $message,
+      "search_q" => $this->searchFieldName,
+      "search_value" => $this->getSearchBy()
     ));
   }
 
@@ -70,18 +74,25 @@ class Users extends BaseView {
       "user" => $context["user"],
       "repos" => $context["repos"],
       "followers" => $context["followers"],
-      "authenticated" => $context["authenticated"]
+      "authenticated" => $context["authenticated"],
+      "search_q" => $this->searchFieldName,
+      "search_value" => $this->getSearchBy()
     ));
   }
 
   public function showSearch(array $context) {
-    echo $this->render('search.html', array("users" => $context["users"], "authenticated" => $context["authenticated"]));
+    echo $this->render('search.html', array(
+      "users" => $context["users"],
+      "authenticated" => $context["authenticated"],
+      "search_q" => $this->searchFieldName,
+      "search_value" => $this->getSearchBy()
+    ));
   }
 
   public function createFollower(array $context) {
-    if ($context[$this->successMsg]) {
+    if (isset($context[$this->successMsg])) {
       $this->cookie->set($this->successMsg, $context[$this->successMsg]);
-    } else if ($context[$this->errorMsg]) {
+    } else if (isset($context[$this->errorMsg])) {
       $this->cookie->set($this->errorMsg, $context[$this->errorMsg]);
     }
     
@@ -89,13 +100,17 @@ class Users extends BaseView {
     die;
   }
 
+  public function getSearchFieldName() {
+    return $this->searchFieldName;
+  }
+
   /**
    * @return String
    *  DRY?
    */
   public function getSearchBy() {
-    if (isset($_GET["q"])) {
-      return $_GET["q"];
+    if (isset($_GET[$this->searchFieldName])) {
+      return $_GET[$this->searchFieldName];
     }
   }
 
