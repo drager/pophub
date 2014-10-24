@@ -139,17 +139,15 @@ class Users {
     if ($accessToken !== null) {
       $owner = $this->model->getLoggedInUser($accessToken)->getLogin();
 
-      //var_dump($owner);
-      //var_dump($user);
+      $errorMsg = $this->view->getErrorMessage();
+      $successMsg = $this->view->getSuccessMessage();
 
       if ($this->followers->createFollower($owner, $user)) {
-        $context = array("Message::Success" => "You now follow " . $user);
+        $context = array($successMsg => "You now follow " . $user);
       }
       else {
-        $context = array("Message::Failure" => "You already follow " . $user);
+        $context = array($errorMsg => "You already follow " . $user);
       }
-
-      var_dump($context);
 
       return $this->view->createFollower($context);
       }

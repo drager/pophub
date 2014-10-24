@@ -6,9 +6,23 @@ class Users extends BaseView {
 
   private $errorView;
 
+  private $cookie;
+
+  private $errorMsg = "Message::Failure";
+
+  private $successMsg = "Message::Success";
+
   public function __construct() {
     $this->errorView = new Error();
     $this->cookie = new CookieJar();
+  }
+
+  public function getErrorMessage() {
+    return $this->errorMsg;
+  }
+
+  public function getSuccessMessage() {
+    return $this->successMsg;
   }
 
   /**
@@ -24,8 +38,8 @@ class Users extends BaseView {
     $pages = $context["pages"];
 
     $message = array(
-      "success" => $this->cookie->get("Message::Success"),
-      "failure" => $this->cookie->get("Message::Failure"),
+      "success" => $this->cookie->get($this->successMsg),
+      "failure" => $this->cookie->get($this->errorMsg),
     );
 
     // Check for see if we tried to get a page that does not exist.
@@ -65,16 +79,20 @@ class Users extends BaseView {
   }
 
   public function createFollower(array $context) {
-    if ($context["Message::Success"]) {
-      $this->cookie->set("Message::Success", $context["Message::Success"]);
-    } else if ($context["Message::Failure"]) {
-      $this->cookie->set("Message::Failure", $context["Message::Failure"]);
+    if ($context[$this->successMsg]) {
+      $this->cookie->set($this->successMsg, $context[$this->successMsg]);
+    } else if ($context[$this->errorMsg]) {
+      $this->cookie->set($this->errorMsg, $context[$this->errorMsg]);
     }
     
     header('Location: ' . "/users/", true, 303);
     die;
   }
 
+  /**
+   * @return String
+   *  DRY?
+   */
   public function getSearchBy() {
     if (isset($_GET["q"])) {
       return $_GET["q"];
