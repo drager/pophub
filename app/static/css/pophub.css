@@ -1,5 +1,5 @@
 .top-nav {
-  background: #40454f;
+  background: #2C3E50;
   width: 100%;
   height: auto;
   display: block;
@@ -7,6 +7,25 @@
   color: #FFF;
   line-height: 60px;
   /*margin-bottom: 2em;*/
+}
+
+.welcome {
+  text-align: center;
+  color: #fff;
+  background: #e68200;
+  height: 300px;
+}
+
+.welcome h1 {
+  line-height: 5em;
+}
+
+.welcome .container {
+  width: 100%;
+}
+
+.welcome .row {
+  margin: 0;
 }
 
 .site-brand {
