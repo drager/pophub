@@ -117,7 +117,7 @@ class Users extends BaseView {
    */
   public function getSearchBy() {
     if (isset($_GET[$this->searchFieldName])) {
-      return $_GET[$this->searchFieldName];
+      return $this->sanitize($_GET[$this->searchFieldName]);
     }
   }
 
@@ -181,5 +181,10 @@ class Users extends BaseView {
   }
   public function getSearchValueField() {
     return $this->search_value;
+  }
+
+  private function sanitize($input) {
+    $temp = trim($input);
+    return filter_var($temp, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
   }
 }

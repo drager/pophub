@@ -185,6 +185,8 @@ class GithubAdapter implements ServiceInterface {
   }
 
   public function searchUsers($query) {
+    $users = null;
+
     $data = $this->github->searchUsers($query);
 
     foreach ($data->items as $userData) {

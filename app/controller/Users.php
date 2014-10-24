@@ -179,6 +179,8 @@ class Users {
 
       return $this->view->createFollower($context);
     }
+
+    return $this->errorView->showPageNotFound("/follow/" . $user);
   }
 
   public function unFollow($user) {
@@ -200,5 +202,7 @@ class Users {
 
       return $this->view->createFollower($context);
     }
+
+    return $this->errorView->showPageNotFound("/unfollow/" . $user);
   }
 }
