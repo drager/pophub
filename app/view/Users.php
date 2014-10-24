@@ -9,10 +9,19 @@ class Users extends BaseView {
   private $cookie;
 
   private $errorMsg = "Message::Failure";
-
   private $successMsg = "Message::Success";
-
   private $searchFieldName = "q";
+
+  private $users = "users";
+  private $repos = "repos";
+  private $followers = "followers";
+  private $user = "user";
+  private $auth = "authenticated";
+  private $pages = "pages";
+  private $sort = "sort";
+  private $message = "message";
+  private $search_q = "search_q";
+  private $search_value = "search_value";
 
   public function __construct() {
     $this->errorView = new Error();
@@ -53,13 +62,13 @@ class Users extends BaseView {
     // die;
 
     echo $this->render('users.html', array(
-      "users" => $context["users"],
-      "authenticated" => $context["authenticated"],
-      "pages" => $pages,
-      "sort" => $sort,
-      "message" => $message,
-      "search_q" => $this->searchFieldName,
-      "search_value" => $this->getSearchBy()
+      $this->users => $context[$this->users],
+      $this->auth => $context[$this->auth],
+      $this->pages => $pages,
+      $this->sort => $sort,
+      $this->message => $message,
+      $this->search_q => $this->searchFieldName,
+      $this->search_value => $this->getSearchBy()
     ));
   }
 
@@ -71,21 +80,21 @@ class Users extends BaseView {
   public function showSingleUser(array $context) {
 
     echo $this->render('show_user.html', array(
-      "user" => $context["user"],
-      "repos" => $context["repos"],
-      "followers" => $context["followers"],
-      "authenticated" => $context["authenticated"],
-      "search_q" => $this->searchFieldName,
-      "search_value" => $this->getSearchBy()
+      $this->user => $context[$this->user],
+      $this->repos => $context[$this->repos],
+      $this->followers => $context[$this->followers],
+      $this->auth => $context[$this->auth],
+      $this->search_q => $this->searchFieldName,
+      $this->search_value => $this->getSearchBy()
     ));
   }
 
   public function showSearch(array $context) {
     echo $this->render('search.html', array(
-      "users" => $context["users"],
-      "authenticated" => $context["authenticated"],
-      "search_q" => $this->searchFieldName,
-      "search_value" => $this->getSearchBy()
+      $this->users => $context[$this->users],
+      $this->auth => $context[$this->auth],
+      $this->search_q => $this->searchFieldName,
+      $this->search_value => $this->getSearchBy()
     ));
   }
 
@@ -142,5 +151,37 @@ class Users extends BaseView {
     if (isset($_GET["page"])) {
       return $_GET["page"];
     }
+  }
+
+
+  public function getUsersField() {
+    return $this->users;
+  }
+  public function getReposField() {
+    return $this->repos;
+  }
+  public function getFollowersField() {
+    return $this->followers;
+  }
+  public function getUserField() {
+    return $this->user;
+  }
+  public function getAuthField() {
+    return $this->auth;
+  }
+  public function getPagesField() {
+    return $this->pages;
+  }
+  public function getSortField() {
+    return $this->sort;
+  }
+  public function getMessageField() {
+    return $this->message;
+  }
+  public function getSearchField() {
+    return $this->search_q;
+  }
+  public function getSearchValueField() {
+    return $this->search_value;
   }
 }

@@ -19,6 +19,8 @@ class Auth {
    */
   private $model;
 
+  private $token = "access_token";
+
   /**
    * @return void
    */
@@ -55,7 +57,7 @@ class Auth {
 
     $session = new Session();
 
-    $session->set("access_token", $token);
+    $session->set($this->token, $token);
 
     return $token;
   }
@@ -69,15 +71,15 @@ class Auth {
   public function loggedInUser($accessToken) {
     $user = $this->model->getLoggedInUser($accessToken);
 
+    $session = new Session();
+
     // If we can't find the user, just destroy it.
     if ($user === null) {
-      Session::destroy("access_token");
+      $session->destroy($this->token);
       return;
     }
 
-    $session = new Session();
-
-    $auth = $session->get("access_token");
+    $auth = $session->get($this->token);
 
     $followers = $this->followers->getFollowers($user->getLogin());
 
@@ -90,12 +92,12 @@ class Auth {
     }
 
     $context = array(
-      "followers" => $followers,
-      "user" => $user,
-      "events" => $events,
-      "authenticated" => $auth,
-      "search_q" => $this->search->getSearchFieldName(),
-      "search_value" => $this->search->getSearchBy()
+      $this->view->getFollowersField() => $followers,
+      $this->view->getUserField() => $user,
+      $this->view->getEventField() => $events,
+      $this->view->getAuthField() => $auth,
+      $this->view->getSearchField() => $this->search->getSearchFieldName(),
+      $this->view->getSearchValueField() => $this->search->getSearchBy()
     );
 
     return $this->view->showLoggedIn($context);

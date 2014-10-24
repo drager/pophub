@@ -80,7 +80,7 @@ class Users {
 
       $followerLogins = array_map(function($item) { return $item["user"]; }, $followers);
 
-      foreach ($users["users"] as $key => $value) {
+      foreach ($users[$this->view->getUsersField()] as $key => $value) {
         if (in_array($value->getLogin(), $followerLogins)) {
           $value->setIsFollowed(true);
         }
@@ -88,9 +88,9 @@ class Users {
     }
 
     $context = array(
-      "users" => $users["users"],
-      "pages" => $pages,
-      "authenticated" => $auth
+      $this->view->getUsersField() => $users[$this->view->getUsersField()],
+      $this->view->getPagesField() => $pages,
+      $this->view->getAuthField() => $auth
     );
 
     return $this->view->showAllUsers($context);
@@ -118,10 +118,10 @@ class Users {
     $auth = $session->get("access_token");
 
     $context = array(
-      "user" => $userData,
-      "repos" => $repos,
-      "followers" => $followers,
-      "authenticated" => $auth
+      $this->view->getUserField() => $userData,
+      $this->view->getReposField() => $repos,
+      $this->view->getFollowersField() => $followers,
+      $this->view->getAuthField() => $auth
     );
 
     return $this->view->showSingleUser($context);
@@ -154,7 +154,7 @@ class Users {
       }
     }
 
-    $context = array("users" => $users, "authenticated" => $auth);
+    $context = array($this->view->getUsersField() => $users, $this->view->getAuthField() => $auth);
 
     return $this->view->showSearch($context);
 
@@ -202,7 +202,3 @@ class Users {
     }
   }
 }
-
-
-
-
