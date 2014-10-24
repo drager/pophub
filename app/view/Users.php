@@ -8,6 +8,7 @@ class Users extends BaseView {
 
   public function __construct() {
     $this->errorView = new Error();
+    $this->cookie = new CookieJar();
   }
 
   /**
@@ -22,6 +23,11 @@ class Users extends BaseView {
 
     $pages = $context["pages"];
 
+    $message = array(
+      "success" => $this->cookie->get("Message::Success"),
+      "failure" => $this->cookie->get("Message::Failure"),
+    );
+
     // Check for see if we tried to get a page that does not exist.
     if ($page > $pages->getNumPages()) {
       return $this->errorView->showPageNotFound("/users/?page=" . $page);
@@ -34,7 +40,8 @@ class Users extends BaseView {
       "users" => $context["users"],
       "authenticated" => $context["authenticated"],
       "pages" => $pages,
-      "sort" => $sort
+      "sort" => $sort,
+      "message" => $message
     ));
   }
 
@@ -55,6 +62,17 @@ class Users extends BaseView {
 
   public function showSearch(array $context) {
     echo $this->render('search.html', array("users" => $context["users"], "authenticated" => $context["authenticated"]));
+  }
+
+  public function createFollower(array $context) {
+    if ($context["Message::Success"]) {
+      $this->cookie->set("Message::Success", $context["Message::Success"]);
+    } else if ($context["Message::Failure"]) {
+      $this->cookie->set("Message::Failure", $context["Message::Failure"]);
+    }
+    
+    header('Location: ' . "/users/", true, 303);
+    die;
   }
 
   public function getSearchBy() {

@@ -26,6 +26,7 @@ class Users {
   function __construct() {
     $config = new Config(__DIR__."/../config/app.php");
     $this->model = new Model\GithubAdapter(new Model\Github($config));
+    $this->followers = new Model\Followers($config);
     $this->view = new View\Users();
     $this->errorView = new View\Error();
   }
@@ -129,6 +130,29 @@ class Users {
 
     return $this->view->showSearch($context);
 
+  }
+
+  public function follow($user) {
+    $session = new Session();
+    $accessToken = $session->get("access_token");
+
+    if ($accessToken !== null) {
+      $owner = $this->model->getLoggedInUser($accessToken)->getLogin();
+
+      //var_dump($owner);
+      //var_dump($user);
+
+      if ($this->followers->createFollower($owner, $user)) {
+        $context = array("Message::Success" => "You now follow " . $user);
+      }
+      else {
+        $context = array("Message::Failure" => "You already follow " . $user);
+      }
+
+      var_dump($context);
+
+      return $this->view->createFollower($context);
+      }
   }
 }
 

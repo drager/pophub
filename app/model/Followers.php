@@ -30,4 +30,29 @@ class Followers extends MysqlAdapter {
 
     return $result;
   }
+
+  public function createFollower($owner, $user) {
+    $db = $this->connect();
+
+    if ($this->contains($user, $owner) === false) {
+      $result = $this->insert($this->table, array($this->user => $user, $this->owner => $owner));
+      return true;
+    }
+
+    return false;
+  }
+
+  public function contains($user, $owner) {
+    $followers = $this->getFollowers($owner);
+
+    if (count($followers) >= 1) {
+      foreach($followers as $value) {
+        if ($value["user"] === $user) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 }

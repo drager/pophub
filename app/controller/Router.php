@@ -27,6 +27,8 @@ class Router {
 
   private $searchPath = "/search/";
 
+  private $followPath = "/follow/";
+
   public function doRoute() {
     $klein = new Klein();
     $this->config = new Config("../app/config/app.php");
@@ -86,6 +88,11 @@ class Router {
     $klein->respond("GET", $this->searchPath . "?", function ($request, $response) {
       $controller = new Users();
       $controller->search();
+    });
+
+    $klein->respond("GET", $this->followPath . "[:username]/?", function ($request, $response) {
+      $controller = new Users();
+      $controller->follow($request->username);
     });
 
     $klein->respond("404", function ($request) {

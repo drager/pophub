@@ -5,6 +5,18 @@
 {% block content %}
   {% include "includes/pagination.html" %}
 
+  {% if message.failure %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      {{ message.failure }}
+    </div>
+  {% elseif message.success %}
+    <div class="alert alert-success alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      {{ message.success }}
+    </div>
+  {% endif %}
+
   {% if sort %}
     <a href="{{ url_to('users') }}" class="btn btn-primary" role="button">Sort by followers (default)</a>
   {% else %}
@@ -39,9 +51,10 @@
             {{ user.public_repos }}
             {% if authenticated %}
               <p>
-                <a href="{{ url_to('users') }}" class="btn btn-primary" role="button">
+                <a href="{{ url_to('follow') }}/{{ user.login }}" class="btn btn-primary" role="button">
                   <span class="glyphicon glyphicon-user"></span>
-                  Follow</a>
+                  Follow
+                </a>
               </p>
             {% endif %}
           </div>
