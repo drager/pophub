@@ -96,8 +96,7 @@ class Auth {
       $this->view->getUserField() => $user,
       $this->view->getEventField() => $events,
       $this->view->getAuthField() => $auth,
-      $this->view->getSearchField() => $this->search->getSearchFieldName(),
-      $this->view->getSearchValueField() => $this->search->getSearchBy()
+      $this->view->getSearchField() => $this->search->getSearchFieldName()
     );
 
     return $this->view->showLoggedIn($context);

@@ -24,8 +24,7 @@ class Home {
 
     $context = array(
       "authenticated" => $auth,
-      "search_q" => $this->search->getSearchFieldName(),
-      "search_value" => $this->search->getSearchBy()
+      "search_q" => $this->search->getSearchFieldName()
     );
 
     return $this->view->showHome($context);

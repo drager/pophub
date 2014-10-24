@@ -22,8 +22,7 @@ class Auth extends BaseView {
       $this->auth => $context[$this->auth],
       $this->followers => $context[$this->followers],
       $this->events => $context[$this->events],
-      $this->search_q => $context[$this->search_q],
-      $this->search_value => $context[$this->search_value]
+      $this->search_q => $context[$this->search_q]
     ));
   }
 

@@ -67,8 +67,7 @@ class Users extends BaseView {
       $this->pages => $pages,
       $this->sort => $sort,
       $this->message => $message,
-      $this->search_q => $this->searchFieldName,
-      $this->search_value => $this->getSearchBy()
+      $this->search_q => $this->searchFieldName
     ));
   }
 
@@ -84,8 +83,7 @@ class Users extends BaseView {
       $this->repos => $context[$this->repos],
       $this->followers => $context[$this->followers],
       $this->auth => $context[$this->auth],
-      $this->search_q => $this->searchFieldName,
-      $this->search_value => $this->getSearchBy()
+      $this->search_q => $this->searchFieldName
     ));
   }
 
