@@ -6,12 +6,36 @@ Follow the most popular users on Github.
 
 [![Coverage Status](https://img.shields.io/coveralls/jh222xk/pophub.svg)](https://coveralls.io/r/jh222xk/pophub)
 
+The application is published [here](http://pophub.jesperh.se/).
+
+## Dependencies
+
+PHP Version 5.4, 5.5, 5.6
+
+Check [composer.json](https://github.com/jh222xk/pophub/blob/master/composer.json) for dependencies needed.
+
+### Install dependencies
+
+First of get [composer](https://getcomposer.org/)
+
+Then run `composer install` and all the dependencies will be installed.
+
 ## Local version
 
-### How to get started
+### Windows
+
+Windows can have trouble setting up memcached...
+
+First of all you need memcached for windows, there's a guide [here](http://zurmo.org/wiki/installing-memcache-on-windows). In the section "Installing PHP Extension" get a file [here](http://windows.php.net/downloads/pecl/releases/memcache/3.0.8/) instead, and choose your php version.
+
+### Ubuntu
+
+There's a great guide on how you setup memcached [here](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-memcache-on-ubuntu-12-04).
+
+
+### Run the application
 
 Locate to `path/to/pophub/app/`then just run PHP's built-in server using the command: `php -S localhost:9999` and the application will be served.
-
 
 ## Tests
 
