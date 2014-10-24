@@ -50,6 +50,11 @@ from `new \Memcached()` to `new \Memcache()`.
 
 There's a great guide on how you setup memcached [here](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-memcache-on-ubuntu-12-04).
 
+### If you can't install memcached for some reason
+
+If you can't install memcached there's a branch for you without it
+[here](https://github.com/jh222xk/pophub/tree/without_memcached).
+
 ## Database
 
 ### Settings
