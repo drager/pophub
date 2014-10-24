@@ -16,7 +16,7 @@ Check [composer.json](https://github.com/jh222xk/pophub/blob/master/composer.jso
 
 Those components in `composer.json` certainly has some dependencies as well. (Hopefully those will be installed without problems).
 
-Memcached is a dependency as well.
+**Memcached** and **MySQL** is a dependency as well.
 
 ## Local version
 
@@ -39,6 +39,37 @@ First of all you need memcached for windows, there's a guide [here](http://zurmo
 
 There's a great guide on how you setup memcached [here](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-memcache-on-ubuntu-12-04).
 
+## Database
+
+### Settings
+
+Set up a database with the name specified in `path/to/pophub/app/config/app.php`
+in `DB_CONNECTION =>`, a database username in `DB_USER =>` and a database password
+in `DB_PASSWORD =>`
+
+### Create table using pop command
+
+#### Windows
+
+Run the command line script located at `path/to/pophub` called `pop`.
+
+Run it like this: `php pop create`
+
+#### Linux/OSX
+
+First of, set `chmod +x` on the script located at `path/to/pophub` called `pop`.
+
+Then run it like this: `php pop create`
+
+### Create table manually
+Here is the table needed.
+```sql
+CREATE TABLE followers (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+user VARCHAR(255) NOT NULL,
+owner VARCHAR(255) NOT NULL,
+created_at DATETIME NOT NULL
+);```
 
 ### Run the application
 
