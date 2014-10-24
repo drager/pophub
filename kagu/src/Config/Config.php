@@ -35,12 +35,10 @@ class Config {
    * @return String
    */
   public function get($index) {
-    $data = $this->configData[$index];
-
-    if ($data === null) {
+    if (isset($this->configData[$index]) === false) {
       throw new \InvalidArgumentException("The index: {$index} does not exist");
     }
 
-    return $data;
+    return $this->configData[$index];
   }
 }
