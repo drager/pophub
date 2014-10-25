@@ -79,7 +79,7 @@ class Github {
       "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
     $url .= "&per_page=100";
     if ($page) {
-      $url .= "&page=" . $page;
+      $url .= rawurlencode("&page=" . $page);
     }
 
     $request = new Request($url);
