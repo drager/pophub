@@ -29,7 +29,7 @@ class Github {
 
   public function postAccessToken($code) {
     $url = "https://github.com/login/oauth/access_token?client_id=" . $this->config->get("GITHUB_CLIENT_ID")  .
-      "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET") . "&code=" . rawurldecode($code);
+      "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET") . "&code=" . rawurlencode($code);
 
     $request = new Request($url);
 
@@ -63,16 +63,16 @@ class Github {
     #https://api.github.com/search/users?q=language:php&followers:%3E=312
     if ($language !== null) {
       $url = $this->baseUrl . "/search/users?q=language";
-      $url .= rawurldecode(":".$language);
+      $url .= rawurlencode(":".$language);
       $url .= "&{$sortBy}";
     } else {
       $url = $this->baseUrl . "/search/users?q={$sortBy}";
     }
 
     if ($sortBy === "repos") {
-      $url .= rawurldecode(":>=228");
+      $url .= rawurlencode(":>=228");
     } else {
-      $url .= rawurldecode(":>=" . $value);
+      $url .= rawurlencode(":>=" . $value);
     }
 
     $url .= "&order=asc&client_id=" . $this->config->get("GITHUB_CLIENT_ID") .
