@@ -24,14 +24,15 @@ class UserTest extends \PHPUnit_Framework_TestCase {
     $userModel = new Model\User($login, $name, $email,
       $location, $joined, $avatar);
 
+    $userModel->setIsFollowed(true);
+
     $this->assertEquals($expectedArray["login"], $userModel->getLogin());
     $this->assertEquals($expectedArray["name"], $userModel->getName());
     $this->assertEquals($expectedArray["email"], $userModel->getEmail());
     $this->assertEquals($expectedArray["location"], $userModel->getLocation());
     $this->assertEquals($expectedArray["joined"], $userModel->getJoined());
     $this->assertEquals($expectedArray["avatar"], $userModel->getAvatar());
+    $this->assertTrue($userModel->getIsFollowed());
   }
 
 }
-
-
