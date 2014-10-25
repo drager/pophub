@@ -102,4 +102,8 @@ class Auth {
 
     return $this->view->showLoggedIn($context);
   }
+
+  public function getTokenSessionName() {
+    return $this->token;
+  }
 }

@@ -29,6 +29,7 @@ class Users {
     $this->followers = new Model\Followers($config);
     $this->view = new View\Users();
     $this->errorView = new View\Error();
+    $this->auth = new Auth();
   }
 
   /**
@@ -71,7 +72,7 @@ class Users {
 
     $session = new Session();
 
-    $auth = $session->get("access_token");
+    $auth = $session->get($this->auth->getTokenSessionName());
 
     if ($auth !== null) {
       $owner = $this->model->getLoggedInUser($auth)->getLogin();
@@ -116,7 +117,7 @@ class Users {
 
     $session = new Session();
 
-    $auth = $session->get("access_token");
+    $auth = $session->get($this->auth->getTokenSessionName());
 
     $context = array(
       $this->view->getUserField() => $userData,
@@ -143,7 +144,7 @@ class Users {
 
     $session = new Session();
 
-    $auth = $session->get("access_token");
+    $auth = $session->get($this->auth->getTokenSessionName());
 
     if ($auth !== null && $users !== null) {
       $owner = $this->model->getLoggedInUser($auth)->getLogin();
@@ -173,7 +174,7 @@ class Users {
    */
   public function follow($user) {
     $session = new Session();
-    $accessToken = $session->get("access_token");
+    $accessToken = $session->get($this->auth->getTokenSessionName());
 
     if ($accessToken !== null) {
       $owner = $this->model->getLoggedInUser($accessToken)->getLogin();
@@ -201,7 +202,7 @@ class Users {
    */
   public function unFollow($user) {
     $session = new Session();
-    $accessToken = $session->get("access_token");
+    $accessToken = $session->get($this->auth->getTokenSessionName());
 
     if ($accessToken !== null) {
       $owner = $this->model->getLoggedInUser($accessToken)->getLogin();

@@ -12,6 +12,7 @@ class Home {
   function __construct(View\Home $view) {
     $this->view = $view;
     $this->search = new View\Users();
+    $this->auth = new Auth();
   }
 
   /**
@@ -20,7 +21,7 @@ class Home {
    */
   public function index() {
     $session = new Session();
-    $auth = $session->get("access_token");
+    $auth = $session->get($this->auth->getTokenSessionName());
 
     $context = array(
       $this->view->getAuthField() => $auth,

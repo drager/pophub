@@ -31,6 +31,10 @@ class Router {
 
   private $unFollowPath = "/unfollow/";
 
+  public function __construct() {
+    $this->auth = new Auth();
+  }
+
   public function doRoute() {
     $klein = new Klein();
     $this->config = new Config("../app/config/app.php");
@@ -41,27 +45,24 @@ class Router {
     });
 
     $klein->respond("GET", $this->loginPath . "?", function ($request, $response) {
-      $controller = new Auth();
-      $url = $controller->index();
+      $url = $this->auth->index();
       $response->redirect($url);
     });
 
     $klein->respond("GET", "/github-callback/?", function ($request, $response) {
       if ($request->code) {
-        $controller = new Auth();
-        $controller->getToken($request->code);
+        $this->auth->getToken($request->code);
         return $response->redirect($this->userPath);
       }
       return $response->redirect($this->homePath);
     });
 
     $klein->respond("GET", $this->userPath . "?", function ($request, $response) {
-      $controller = new Auth();
       $session = new Session();
-      $token = $session->get("access_token");
+      $token = $session->get($this->auth->getTokenSessionName());
 
       if ($token) {
-        return $controller->loggedInUser($token);
+        return $this->auth->loggedInUser($token);
       }
 
       return $response->redirect($this->homePath);
@@ -69,7 +70,7 @@ class Router {
 
     $klein->respond("GET", $this->logoutPath . "?", function ($request, $response) {
       $session = new Session();
-      $session->destroy("access_token");
+      $session->destroy($this->auth->getTokenSessionName());
       return $response->redirect($this->homePath);
     });
 
