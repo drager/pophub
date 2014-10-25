@@ -87,6 +87,11 @@ class Users extends BaseView {
     ));
   }
 
+  /**
+   * View for showing the search results
+   * @param Array $context
+   * @return void
+   */
   public function showSearch(array $context) {
     echo $this->render('search.html', array(
       $this->users => $context[$this->users],
@@ -96,6 +101,11 @@ class Users extends BaseView {
     ));
   }
 
+  /**
+   * View for creating/removing a follower
+   * @param Array $context
+   * @return void
+   */
   public function createFollower(array $context) {
     if (isset($context[$this->successMsg])) {
       $this->cookie->set($this->successMsg, $context[$this->successMsg]);

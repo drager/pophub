@@ -80,6 +80,7 @@ class Users {
 
       $followerLogins = array_map(function($item) { return $item["user"]; }, $followers);
 
+      // Check if the currently logged in user follow some users.
       foreach ($users[$this->view->getUsersField()] as $key => $value) {
         if (in_array($value->getLogin(), $followerLogins)) {
           $value->setIsFollowed(true);
@@ -127,6 +128,10 @@ class Users {
     return $this->view->showSingleUser($context);
   }
 
+  /**
+   * Search for users
+   * @return Show search View
+   */
   public function search() {
     $searchQuery = $this->view->getSearchBy();
 
@@ -147,6 +152,7 @@ class Users {
 
       $followerLogins = array_map(function($item) { return $item["user"]; }, $followers);
 
+      // Check if the currently logged in user follow some users.
       foreach ($users as $key => $value) {
         if (in_array($value->getLogin(), $followerLogins)) {
           $value->setIsFollowed(true);
@@ -160,6 +166,11 @@ class Users {
 
   }
 
+  /**
+   * Action for start following a given user
+   * @param String $user 
+   * @return Create Follower View
+   */
   public function follow($user) {
     $session = new Session();
     $accessToken = $session->get("access_token");
@@ -183,6 +194,11 @@ class Users {
     return $this->errorView->showPageNotFound("/follow/" . $user);
   }
 
+  /**
+   * Action for start unfollowing a given user
+   * @param String $user 
+   * @return Create Follower View
+   */
   public function unFollow($user) {
     $session = new Session();
     $accessToken = $session->get("access_token");

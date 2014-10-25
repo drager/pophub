@@ -23,8 +23,8 @@ class Home {
     $auth = $session->get("access_token");
 
     $context = array(
-      "authenticated" => $auth,
-      "search_q" => $this->search->getSearchFieldName()
+      $this->view->getAuthField() => $auth,
+      $this->view->getSearchField() => $this->search->getSearchFieldName()
     );
 
     return $this->view->showHome($context);

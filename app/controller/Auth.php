@@ -85,6 +85,7 @@ class Auth {
 
     $events = null;
 
+    // Get events
     if ($followers !== null) {
       foreach ($followers as $follower) {
         $events[] = $this->model->getUserActivity($follower["user"]);

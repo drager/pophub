@@ -11,4 +11,6 @@ interface CacheAdapterInterface {
   function set($key, $value);
 
   function flush();
+
+  function getResultCode();
 }

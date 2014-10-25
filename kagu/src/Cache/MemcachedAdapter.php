@@ -45,10 +45,14 @@ class MemcachedAdapter implements CacheAdapterInterface {
     $this->memcached->set($key, $value);
   }
 
+  /**
+   * Flush (empty the cache)
+   */
   public function flush() {
     return $this->memcached->flush();
   }
 
+  
   public function getResultCode() {
     return $this->memcached->getResultCode();
   }
