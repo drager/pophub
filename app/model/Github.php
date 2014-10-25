@@ -149,7 +149,7 @@ class Github {
   }
 
   public function searchUsers($query) {
-   $url = $this->baseUrl . "/search/users?q=" . rawurldecode($query) . "&client_id="
+   $url = $this->baseUrl . "/search/users?q=" . rawurlencode($query) . "&client_id="
       . $this->config->get("GITHUB_CLIENT_ID") . "&client_secret=" . $this->config->get("GITHUB_CLIENT_SECRET");
 
     $request = new Request($url);
