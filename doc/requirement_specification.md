@@ -2,7 +2,7 @@
 
 ## PopHub
 
-List popular users from Github depending on followers, commits or 
+List popular users from Github depending on followers, repos or 
 other interesting factors.
 
 Follow users to get specific information from them without showing 
@@ -10,7 +10,7 @@ that they follow them on Github but follow them in this application.
 
 # UC1 List popular users from Github
 ## Main scenario
-1. Starts when a user visit the site
+1. Starts when a user sees all the users
 2. The system present all the popular users according to followers on Github
 
 ## Alternate scenarios
