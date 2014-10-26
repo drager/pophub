@@ -8,6 +8,10 @@ Follow the most popular users on Github.
 
 The application is published [here](http://pophub.jesperh.se/).
 
+## Documentation
+Read below for some documentation, there are more documentation
+[here](https://github.com/jh222xk/pophub/tree/master/doc) as well.
+
 ## Dependencies
 
 PHP Version 5.4, 5.5, 5.6
