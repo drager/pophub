@@ -12,6 +12,12 @@ The application is published [here](http://pophub.jesperh.se/).
 Read below for some documentation, there are more documentation
 [here](https://github.com/jh222xk/pophub/tree/master/doc) as well.
 
+## Limitations
+
+GitHub's API has some limitations, you can read more at 
+https://developer.github.com/v3/search/#about-the-search-api and
+https://developer.github.com/v3/search/#rate-limit
+
 ## Dependencies
 
 PHP Version 5.4, 5.5, 5.6
