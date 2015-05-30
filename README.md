@@ -2,15 +2,13 @@ PopHub
 ======
 Follow the most popular users on Github.
 
-[![Build Status](https://travis-ci.org/jh222xk/pophub.svg?branch=master)](https://travis-ci.org/jh222xk/pophub)
+[![Build Status](https://travis-ci.org/drager/pophub.svg?branch=master)](https://travis-ci.org/drager/pophub)
 
-[![Coverage Status](https://img.shields.io/coveralls/jh222xk/pophub.svg)](https://coveralls.io/r/jh222xk/pophub)
-
-The application is published [here](http://pophub.jesperh.se/).
+[![Coverage Status](https://img.shields.io/coveralls/drager/pophub.svg)](https://coveralls.io/r/drager/pophub)
 
 ## Documentation
 Read below for some documentation, there are more documentation
-[here](https://github.com/jh222xk/pophub/tree/master/doc) as well.
+[here](https://github.com/drager/pophub/tree/master/doc) as well.
 
 ## Limitations
 
@@ -63,7 +61,7 @@ There's a great guide on how you setup memcached [here](https://www.digitalocean
 ### If you can't install memcached for some reason
 
 If you can't install memcached there's a branch for you without it
-[here](https://github.com/jh222xk/pophub/tree/without_memcached).
+[here](https://github.com/drager/pophub/tree/without_memcached).
 
 ## Database
 
@@ -116,12 +114,3 @@ and for the "helpers" type `vendor/bin/phpunit kagu/tests/`
 ### Test/Code coverage
 
 To get code coverage simply locate to `path/to/pophub/` and type `vendor/bin/phpunit --coverage-html ./report app/tests/` and PHPUnit will generate a report for you.
-
-
-### Travis
-Continuous Integration using Travis CI can be found at 
-https://travis-ci.org/jh222xk/pophub
-
-### Coveralls
-Code coverage using Coveralls can be found at 
-https://coveralls.io/r/jh222xk/pophub
